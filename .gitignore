@@ -1,0 +1,14 @@
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+
+# flymake-mode
+*_flymake.*
+
+# Flycheck
+flycheck_*.el
+
+node_modules/
+coverage/
+test/unit/coverage
