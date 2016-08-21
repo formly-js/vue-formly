@@ -9,6 +9,8 @@ Formly.install = function(Vue, options){
         return;
     }
 
+    Components(Vue);
+
     Vue.$formly = {
         
         fields: {},
