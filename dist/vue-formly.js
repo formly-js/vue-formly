@@ -127,6 +127,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    addType: function addType(id, options) {
 	        Vue.$formlyFields[id] = options;
 	    },
+	    getTypes: function getTypes() {
+	        return Vue.$formlyFields;
+	    },
 	    install: function install(Vue, options) {
 
 	        if (Formly.installed) {
@@ -141,6 +144,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	if (typeof window !== 'undefined' && window.Vue) {
 	    window.Vue.use(Formly);
+
+	    window.Vue.$formly = Formly;
 	}
 	exports.default = Formly;
 

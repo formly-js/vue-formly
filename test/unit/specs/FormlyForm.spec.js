@@ -19,10 +19,6 @@ let FormlyRestrictedField = Vue.extend({
     props: ['field', 'model']
 });
 
-Vue.$formlyFields = {
-    'restricted': FormlyRestrictedField
-};
-
 
 let el, vm;
 
@@ -86,6 +82,10 @@ describe('FormlyForm', () => {
                 components: Vue.$formlyFields
             });
         });
+
+        Vue.$formlyFields = {
+            'restricted': FormlyRestrictedField
+        };
 
         let data = {
             schema: [

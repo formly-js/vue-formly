@@ -3,9 +3,9 @@
 </template>
 
 <script>
- import Vue from 'vue';
+ import VueFormly from '../index';
  export default {
      props: ['field', 'model'],
-     components: Vue.$formlyFields
+     components: VueFormly.getTypes()
  }
 </script>

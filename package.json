@@ -2,8 +2,7 @@
   "name": "vue-formly",
   "version": "0.1.0",
   "description": "A simple and extendable form builder for Vue.js",
-  "main": "dist/vue-formly.common.js",
-  "jsnext:main": "dist/vue-formly.es2015.js",
+  "main": "dist/vue-formly.js",
   "scripts": {
     "test": "karma start test/unit/karma.conf.js",
     "build": "webpack --config webpack.build.config.js"

@@ -10,6 +10,10 @@ let Formly = {
     addType(id, options){
         Vue.$formlyFields[id] = options;
     },
+
+    getTypes(){
+        return Vue.$formlyFields;
+    },
     
     install(Vue, options){
 
@@ -27,5 +31,7 @@ let Formly = {
 //auto install
 if (typeof window !== 'undefined' && window.Vue) {
     window.Vue.use(Formly);
+    //expose formly functions if auto installed
+    window.Vue.$formly = Formly;
 }
 export default Formly;
