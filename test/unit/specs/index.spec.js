@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 
 import VueFormly from 'src/index';
+import Util, {addType, getTypes} from 'src/util';
 
 
 describe('module', () => {
@@ -8,7 +9,9 @@ describe('module', () => {
     it('module props', () => {
         expect(VueFormly).to.exist;
         expect(VueFormly.install).to.be.a('function');
-        expect(VueFormly.addType).to.be.a('function');
+        expect(addType).to.be.a('function');
+        expect(getTypes).to.be.a('function');
+        expect(Util.formlyFields).to.be.a('object');
     });
 
     it('should add fields to Vue', () => {
@@ -18,13 +21,12 @@ describe('module', () => {
             component(){}                
         };
         VueFormly.install(Vue);
-        expect(Vue.$formlyFields).to.be.a('object');
 
         let newField = {
             foo: 'bar'
         };
-        VueFormly.addType('test', newField);
-        expect(Vue.$formlyFields.test).to.deep.equal(newField);
+        addType('test', newField);
+        expect(getTypes().test).to.deep.equal(newField);
     });
     
 });

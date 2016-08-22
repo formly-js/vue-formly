@@ -1,5 +1,5 @@
 /**
- * vue-formly v0.1.0
+ * vue-formly v0.1.1
  * https://github.com/matt-sanders/vue-formly
  * Released under the MIT License.
  */
@@ -121,15 +121,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _index2 = _interopRequireDefault(_index);
 
+	var _util = __webpack_require__(7);
+
+	var _util2 = _interopRequireDefault(_util);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var Formly = {
-	    addType: function addType(id, options) {
-	        Vue.$formlyFields[id] = options;
-	    },
-	    getTypes: function getTypes() {
-	        return Vue.$formlyFields;
-	    },
 	    install: function install(Vue, options) {
 
 	        if (Formly.installed) {
@@ -137,15 +135,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        (0, _index2.default)(Vue);
-
-	        Vue.$formlyFields = {};
 	    }
 	};
 
 	if (typeof window !== 'undefined' && window.Vue) {
 	    window.Vue.use(Formly);
 
-	    window.Vue.$formly = Formly;
+	    window.Vue.$formly = { getTypes: _util.getTypes, addType: _util.addType };
 	}
 	exports.default = Formly;
 
@@ -218,6 +214,31 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = "\n<fieldset>\n    <formly-field v-for=\"field in fields\" :field=\"field\" :model.sync=\"model[field.key]\" ></formly-field>\n</fieldset>\n";
+
+/***/ },
+/* 5 */,
+/* 6 */,
+/* 7 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.addType = addType;
+	exports.getTypes = getTypes;
+	var _exports = {
+	    formlyFields: {}
+	};
+	exports.default = _exports;
+	function addType(id, options) {
+	    _exports.formlyFields[id] = options;
+	}
+
+	function getTypes() {
+	    return _exports.formlyFields;
+	}
 
 /***/ }
 /******/ ])

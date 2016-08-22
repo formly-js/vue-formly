@@ -1,11 +1,12 @@
 <template>
-  <component :is="field.type" :model="model"></component>
+  <component :is="field.type" :model.sync="model" :field="field"></component>
 </template>
 
 <script>
- import VueFormly from '../index';
+ const Vue = require('vue');
+ import Util, {getTypes} from '../util';
  export default {
      props: ['field', 'model'],
-     components: VueFormly.getTypes()
- }
+     components: getTypes()
+  }
 </script>

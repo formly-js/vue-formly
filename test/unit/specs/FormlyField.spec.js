@@ -24,7 +24,8 @@ describe('FormlyField', () => {
     it('should take on the type of another component', () => {
 
         Vue.component('test', {
-            template: '<div id="testComponent">Hello World</div>'
+            props: ['field'],
+            template: '<div id="testComponent">{{field.type}}</div>'
         });
 
         let data = {
@@ -37,7 +38,7 @@ describe('FormlyField', () => {
 
         let innerElem = vm.$el.querySelector('#testComponent');
 
-        expect(innerElem.textContent).to.contain('Hello World');
+        expect(innerElem.textContent).to.contain(data.schema.type);
         
     });
 

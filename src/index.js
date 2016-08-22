@@ -1,29 +1,17 @@
 import Components from './components/index';
+import Util,{getTypes, addType} from './util';
 
 
 let Formly = {
-    /**
-     * Allow additional templates to be added
-     * @param {String} id
-     * @param {Object} options
-     */
-    addType(id, options){
-        Vue.$formlyFields[id] = options;
-    },
-
-    getTypes(){
-        return Vue.$formlyFields;
-    },
     
     install(Vue, options){
 
         if ( Formly.installed ){
             return;
         }
-
+        
+        //install our components
         Components(Vue);
-
-        Vue.$formlyFields = {};
         
     }
 };
@@ -32,6 +20,6 @@ let Formly = {
 if (typeof window !== 'undefined' && window.Vue) {
     window.Vue.use(Formly);
     //expose formly functions if auto installed
-    window.Vue.$formly = Formly;
+    window.Vue.$formly = {getTypes, addType};
 }
 export default Formly;
