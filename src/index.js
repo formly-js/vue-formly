@@ -1,37 +1,27 @@
-import Components from './components';
+import Components from './components/index';
 
 
-let Formly = {};
-
-Formly.install = function(Vue, options){
-
-    if ( Formly.installed ){
-        return;
-    }
-
-    Components(Vue);
-
-    Vue.$formly = {
-        
-        fields: {},
-
-        /**
-         * Allow additional templates to be added
-         * @param {String} id
-         * @param {Object} options
-         */
-        addType(id, options){
-            //our base component
-            let base = {
-                props: ['model', 'schema']
-            };
-            
-            //merge 
-            Object.assign(options, base);
-            Vue.$formly.fields[id] = Vue.extend(options);
-        }
-    };
+let Formly = {
+    /**
+     * Allow additional templates to be added
+     * @param {String} id
+     * @param {Object} options
+     */
+    addType(id, options){
+        Vue.$formlyFields[id] = options;
+    },
     
+    install(Vue, options){
+
+        if ( Formly.installed ){
+            return;
+        }
+
+        Components(Vue);
+
+        Vue.$formlyFields = {};
+        
+    }
 };
 
 //auto install

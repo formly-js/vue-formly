@@ -1,10 +1,7 @@
 import chai from 'chai';
 const expect = chai.expect;
-import sinonChai from 'sinon-chai';
-import sinon from 'sinon';
 import Vue from 'vue';
 import FormlyField from 'src/components/FormlyField.vue';
-chai.use(sinonChai);
 
 let el, vm;
 
