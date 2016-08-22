@@ -1,9 +1,9 @@
 <template>
-  <component :is="schema.type" :model="model"></component>
+  <component :is="field.type" :model="model"></component>
 </template>
 
 <script>
  export default {
-     props: ['schema', 'model']
+     props: ['field', 'model']
  }
 </script>

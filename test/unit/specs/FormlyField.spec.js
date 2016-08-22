@@ -3,8 +3,7 @@ const expect = chai.expect;
 import sinonChai from 'sinon-chai';
 import sinon from 'sinon';
 import Vue from 'vue';
-import VueFormly from 'src/index';
-Vue.use(VueFormly);
+import FormlyField from 'src/components/FormlyField.vue';
 chai.use(sinonChai);
 
 let el, vm;
@@ -14,7 +13,10 @@ function createForm(template, data){
     el.innerHTML = template;
     vm = new Vue({
         el: el,
-        data: data
+        data: data,
+        components: {
+            'formly-field': FormlyField
+        }
     });
 
     return [el, vm];
@@ -34,7 +36,7 @@ describe('FormlyField', () => {
             }
         };
         
-        createForm('<formly-field :schema="schema"></formly-field>', data);
+        createForm('<formly-field :field="schema"></formly-field>', data);
 
         let innerElem = vm.$el.querySelector('#testComponent');
 
@@ -56,7 +58,7 @@ describe('FormlyField', () => {
             testModel: 'foo'
         };
 
-        createForm('<formly-field :schema="schema" :model.sync="testModel"></formly-field>', data);
+        createForm('<formly-field :field="schema" :model.sync="testModel"></formly-field>', data);
 
         let input = vm.$el.querySelector('#testInput');
 
