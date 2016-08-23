@@ -21,7 +21,7 @@ module.exports = [
         output: {
             path: "./dist",
             filename: "vue-formly.js",
-            library: "VueFormGenerator",
+            library: "VueFormly",
             libraryTarget: "umd"
         },
 
