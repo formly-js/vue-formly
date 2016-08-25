@@ -24,46 +24,54 @@ describe('FormlyField', () => {
     it('should take on the type of another component', () => {
 
         Vue.component('test', {
-            props: ['field'],
-            template: '<div id="testComponent">{{field.type}}</div>'
+            props: ['form', 'key'],
+            template: '<div id="testComponent">{{form.fields[key].type}}</div>'
         });
 
         let data = {
-            schema:{
-                type: 'test'
+            form:{
+                fields: {
+                    test: {
+                        type: 'test'
+                    }
+                }
             }
         };
         
-        createForm('<formly-field :field="schema"></formly-field>', data);
+        createForm('<formly-field :form="form" key="test"></formly-field>', data);
 
         let innerElem = vm.$el.querySelector('#testComponent');
 
-        expect(innerElem.textContent).to.contain(data.schema.type);
+        expect(innerElem.textContent).to.contain(data.form.fields.test.type);
         
     });
 
     it('should mimic the model of the parent', (done) => {
 
         Vue.component('test', {
-            props: ['model'],
-            template: '<input type="text" id="testInput" v-model="model">'
+            props: ['form', 'key'],
+            template: '<input type="text" id="testInput" v-model="form.fields[key].value">'
         });
 
         let data = {
-            schema: {
-                type: 'test'
-            },
-            testModel: 'foo'
+            form: {
+                fields: {
+                    search: {
+                        type: 'test',
+                        value: 'foo'
+                    }
+                }
+            }
         };
 
-        createForm('<formly-field :field="schema" :model.sync="testModel"></formly-field>', data);
+        createForm('<formly-field :form.sync="form" key="search"></formly-field>', data);
 
         let input = vm.$el.querySelector('#testInput');
 
         expect(input.value).to.contain('foo');
 
         //change the value and expect a change
-        vm.testModel = 'bar';
+        vm.form.fields.search.value = 'bar';
 
         setTimeout(() => {
             expect(input.value).to.equal('bar');

@@ -9,14 +9,13 @@ chai.use(sinonChai);
 
 //mock our formly-field component
 let FormlyField = Vue.extend({
-    template: '<div class="formly-field"><pre id="{{field.key}}_field">{{field | json}}</pre><pre id="{{field.key}}_model">{{model | json}}</pre></div>',
-    props: ['field', 'model']
+    template: '<div class="formly-field"><pre id="{{key}}_field">{{form.fields[key] | json}}</pre><pre id="{{key}}_model">{{form.fields[key].value | json}}</pre></div>',
+    props: ['form', 'key']
 });
 
 //our formly specific field
 let FormlyRestrictedField = Vue.extend({
-    template: '<div class="restricted-field"></div>',
-    props: ['field', 'model']
+    template: '<div class="restricted-field"></div>'
 });
 
 
@@ -43,23 +42,20 @@ describe('FormlyForm', () => {
     it('should create a subset of components with the right data', () => {
 
         let data = {
-            schema: [
-                {
-                    key: 'fname',
-                    type: 'input'
-                },
-                {
-                    key: 'lname',
-                    type: 'input'
+            form: {
+                fields: {
+                    fname: {
+                        type: 'input'
+                    },
+                    lname: {
+                        type: 'input',
+                        value: 'smith'
+                    }
                 }
-            ],
-            model: {
-                fname: '',
-                lname: 'smith'
             }
         };
 
-        createForm('<formly-form :fields="schema" :model="model"></formly-form>', data);
+        createForm('<formly-form :form="form"></formly-form>', data);
 
         //check the elements have been created
         expect(vm.$el.querySelectorAll('fieldset')).to.be.length(1);
@@ -67,7 +63,10 @@ describe('FormlyForm', () => {
 
         //check their data
         expect(vm.$el.querySelector('#lname_model').textContent).to.contain('smith');
-        expect(JSON.parse(vm.$el.querySelector('#lname_field').textContent)).to.deep.equal(data.schema[1]);
+        expect(JSON.parse(vm.$el.querySelector('#lname_field').textContent)).to.deep.equal(data.form.fields.lname);
+        expect(JSON.parse(vm.$el.querySelector('#fname_field').textContent)).to.deep.equal({type: 'input', value: ''});
+        expect(data.form.$errors).to.deep.equal({});
+        expect(data.form.$valid).to.be.false;
         
     });
 
@@ -77,8 +76,8 @@ describe('FormlyForm', () => {
         //re-create the formly field
         Vue.component('formly-field', (resolve) =>{
             resolve({
-                props: ['field', 'model'],
-                template: '<component :is="field.type"></component>',
+                props: ['form', 'key'],
+                template: '<component :is="form.fields[key].type"></component>',
                 components: Vue.$formlyFields
             });
         });
@@ -88,17 +87,15 @@ describe('FormlyForm', () => {
         };
 
         let data = {
-            schema: [
-                {
-                    key: 'fname',
-                    type: 'restricted'
+            form: {
+                fields: {
+                    fname: {
+                        type: 'restricted'
+                    }
                 }
-            ],
-            model: {
-                fname: ''
             }
         };
-        createForm('<formly-form :fields="schema" :model="model"></formly-form><restricted></restricted>', data);
+        createForm('<formly-form :form="form"></formly-form><restricted></restricted>', data);
 
         expect(console.error).to.be.called.once;
         expect(vm.$el.querySelectorAll('.restricted-field')).to.be.length(1);

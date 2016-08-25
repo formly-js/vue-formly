@@ -1,12 +1,12 @@
 <template>
-  <component :is="field.type" :model.sync="model" :field="field"></component>
+  <component :is="form.fields[key].type" :form.sync="form" :key="key"></component>
 </template>
 
 <script>
  const Vue = require('vue');
  import Util, {getTypes} from '../util';
  export default {
-     props: ['field', 'model'],
+     props: ['form', 'key'],
      components: getTypes()
   }
 </script>
