@@ -29,7 +29,7 @@ describe('module', () => {
             foo: 'bar'
         };
         addType('test', newField);
-        expect(getTypes().test).to.deep.equal(newField);
+        expect(getTypes().formly_test).to.deep.equal(newField);
     });
     
 });

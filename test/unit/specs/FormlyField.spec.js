@@ -23,7 +23,7 @@ describe('FormlyField', () => {
 
     it('should take on the type of another component', () => {
 
-        Vue.component('test', {
+        Vue.component('formly_test', {
             props: ['form', 'key'],
             template: '<div id="testComponent">{{form[key].type}}</div>'
         });
@@ -46,7 +46,7 @@ describe('FormlyField', () => {
 
     it('should mimic the model of the parent', (done) => {
 
-        Vue.component('test', {
+        Vue.component('formly_test', {
             props: ['form', 'key'],
             template: '<input type="text" id="testInput" v-model="form[key].value">'
         });

@@ -1,5 +1,5 @@
 <template>
-  <component :is="form[key].type" :form.sync="form" :key="key"></component>
+  <component :is="type" :form.sync="form" :key="key"></component>
 </template>
 
 <script>
@@ -7,6 +7,11 @@
  import Util, {getTypes} from '../util';
  export default {
      props: ['form', 'key'],
+     computed: {
+         type:function(){
+             return 'formly_'+this.form[this.key].type;
+         }
+     },
      components: getTypes()
   }
 </script>
