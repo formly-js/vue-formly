@@ -25,15 +25,13 @@ describe('FormlyField', () => {
 
         Vue.component('test', {
             props: ['form', 'key'],
-            template: '<div id="testComponent">{{form.fields[key].type}}</div>'
+            template: '<div id="testComponent">{{form[key].type}}</div>'
         });
 
         let data = {
             form:{
-                fields: {
-                    test: {
-                        type: 'test'
-                    }
+                test: {
+                    type: 'test'
                 }
             }
         };
@@ -42,7 +40,7 @@ describe('FormlyField', () => {
 
         let innerElem = vm.$el.querySelector('#testComponent');
 
-        expect(innerElem.textContent).to.contain(data.form.fields.test.type);
+        expect(innerElem.textContent).to.contain(data.form.test.type);
         
     });
 
@@ -50,16 +48,14 @@ describe('FormlyField', () => {
 
         Vue.component('test', {
             props: ['form', 'key'],
-            template: '<input type="text" id="testInput" v-model="form.fields[key].value">'
+            template: '<input type="text" id="testInput" v-model="form[key].value">'
         });
 
         let data = {
             form: {
-                fields: {
-                    search: {
-                        type: 'test',
-                        value: 'foo'
-                    }
+                search: {
+                    type: 'test',
+                    value: 'foo'
                 }
             }
         };
@@ -71,7 +67,7 @@ describe('FormlyField', () => {
         expect(input.value).to.contain('foo');
 
         //change the value and expect a change
-        vm.form.fields.search.value = 'bar';
+        vm.form.search.value = 'bar';
 
         setTimeout(() => {
             expect(input.value).to.equal('bar');

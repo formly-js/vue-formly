@@ -9,6 +9,8 @@ describe('module', () => {
     it('module props', () => {
         expect(VueFormly).to.exist;
         expect(VueFormly.install).to.be.a('function');
+        expect(VueFormly.addType).to.be.a('function');
+        expect(VueFormly.getTypes).to.be.a('function');
         expect(addType).to.be.a('function');
         expect(getTypes).to.be.a('function');
         expect(Util.formlyFields).to.be.a('object');
@@ -18,7 +20,8 @@ describe('module', () => {
 
         //mock vue
         window.Vue = {
-            component(){}                
+            component(){},
+            filter(){}
         };
         VueFormly.install(Vue);
 

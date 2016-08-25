@@ -4,12 +4,15 @@ import sinonChai from 'sinon-chai';
 import sinon from 'sinon';
 import Vue from 'vue';
 import FormlyForm from 'src/components/FormlyForm.vue';
+import Filters from 'src/filters/index';
 Vue.component('formly-form', FormlyForm);
 chai.use(sinonChai);
+//install our filters
+Filters(Vue);
 
 //mock our formly-field component
 let FormlyField = Vue.extend({
-    template: '<div class="formly-field"><pre id="{{key}}_field">{{form.fields[key] | json}}</pre><pre id="{{key}}_model">{{form.fields[key].value | json}}</pre></div>',
+    template: '<div class="formly-field"><pre id="{{key}}_field">{{form[key] | json}}</pre><pre id="{{key}}_model">{{form[key].value | json}}</pre></div>',
     props: ['form', 'key']
 });
 
@@ -43,14 +46,12 @@ describe('FormlyForm', () => {
 
         let data = {
             form: {
-                fields: {
-                    fname: {
-                        type: 'input'
-                    },
-                    lname: {
-                        type: 'input',
-                        value: 'smith'
-                    }
+                fname: {
+                    type: 'input'
+                },
+                lname: {
+                    type: 'input',
+                    value: 'smith'
                 }
             }
         };
@@ -63,7 +64,7 @@ describe('FormlyForm', () => {
 
         //check their data
         expect(vm.$el.querySelector('#lname_model').textContent).to.contain('smith');
-        expect(JSON.parse(vm.$el.querySelector('#lname_field').textContent)).to.deep.equal(data.form.fields.lname);
+        expect(JSON.parse(vm.$el.querySelector('#lname_field').textContent)).to.deep.equal(data.form.lname);
         expect(JSON.parse(vm.$el.querySelector('#fname_field').textContent)).to.deep.equal({type: 'input', value: ''});
         expect(data.form.$errors).to.deep.equal({});
         expect(data.form.$valid).to.be.false;
@@ -77,7 +78,7 @@ describe('FormlyForm', () => {
         Vue.component('formly-field', (resolve) =>{
             resolve({
                 props: ['form', 'key'],
-                template: '<component :is="form.fields[key].type"></component>',
+                template: '<component :is="form[key].type"></component>',
                 components: Vue.$formlyFields
             });
         });
@@ -88,10 +89,8 @@ describe('FormlyForm', () => {
 
         let data = {
             form: {
-                fields: {
-                    fname: {
-                        type: 'restricted'
-                    }
+                fname: {
+                    type: 'restricted'
                 }
             }
         };

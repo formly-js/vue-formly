@@ -1,5 +1,5 @@
 <template>
-  <component :is="form.fields[key].type" :form.sync="form" :key="key"></component>
+  <component :is="form[key].type" :form.sync="form" :key="key"></component>
 </template>
 
 <script>
