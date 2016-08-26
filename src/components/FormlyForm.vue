@@ -17,11 +17,17 @@
          this.$set('form.$errors', {});
          this.$set('form.$valid', true);
 
-         this.$watch('form.$errors', (val) => {
-             let valid = false;
-             if ( Object.keys(this.form.$errors).length == 0 ) valid = true;
+         this.$watch('form.$errors', function(val){
+             let valid = true;
+             Object.keys(this.form.$errors).forEach((key)=>{
+                 let errField = this.form.$errors[key];
+                 Object.keys(errField).forEach((errKey) => {
+                     if ( errField[errKey] ) valid = false;
+                 })
+             });
              this.form.$valid = valid;
-             return valid;
+         }, {
+             deep: true
          });
      }
  }

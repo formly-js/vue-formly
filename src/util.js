@@ -19,23 +19,13 @@ export function getTypes(){
 }
 
 /**
- * Allows a field to add errors to the form
+ * Allows a field to add/remove errors to the form
  * @param {Object} form
  * @param {String} key
  * @param {String} err
+ * @param {Bool} isError
  */
-export function addError(form, key, err){
+export function setError(form, key, err, isError){
     if ( !form.$errors[key] ) form.$errors[key] = {};
-    form.$errors[key][err] = true;
-}
-
-/**
- * Allows a field to remove an error from the form
- * @param {Object} form
- * @param {String} key
- * @param {String} err
- */
-export function removeError(form, key, err){
-    delete form.$errors[key][err];
-    if (Object.keys(form.$errors[key]).length == 0 ) delete form.$errors[key];
+    form.$errors[key][err] = isError;
 }

@@ -111,12 +111,26 @@ describe('FormlyForm', () => {
         createForm('<formly-form :form="form"></formly-form>', data);
         expect(vm.form.$errors).to.deep.equal({});
         expect(vm.form.$valid).to.be.true;
-        vm.$set('form.$errors.test', 'testing');
+        vm.$set('form.$errors.test', {foo: true});
 
         setTimeout(()=>{
             expect(vm.form.$valid).to.be.false;
             done();
         },0);
+    });
+
+    it('should skip empty errors', (done)=>{
+        let data = {
+            form: {
+
+            }
+        };
+        createForm('<formly-form :form="form"></formly-form>', data);
+        vm.$set('form.$errors.test', {foo: false});
+        setTimeout(() => {
+            expect(vm.form.$valid).to.be.true;
+            done();
+        });
     });
     
 });

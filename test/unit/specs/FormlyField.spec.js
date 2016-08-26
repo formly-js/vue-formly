@@ -30,6 +30,8 @@ describe('FormlyField', () => {
 
         let data = {
             form:{
+                $errors: {},
+                $valid: {},
                 test: {
                     type: 'test'
                 }
@@ -53,6 +55,8 @@ describe('FormlyField', () => {
 
         let data = {
             form: {
+                $errors: {},
+                $valid: {},
                 search: {
                     type: 'test',
                     value: 'foo'
@@ -108,22 +112,87 @@ describe('FormlyField', () => {
 
             vm.$set('form.search.value','testing');
             setTimeout(()=>{
-                expect(vm.form.$errors.search).to.equal(undefined);
+                expect(vm.form.$errors.search.required).to.be.false;
                 done();
             },0);
             
         });
 
-        it('should take an expression', () => {
+        it('should take an expression', (done) => {
             let data = {
                 form: {
                     $valid: true,
                     $errors: {},
                     search: {
-                        
+                        type: 'test',
+                        value: 'testing',
+                        validators: {
+                            expression: 'field.value == "test"'
+                        }
                     }
                 }
             };
+
+            createValidField(data);
+            expect(vm.form.$errors.search.expression).to.be.true;
+
+            vm.$set('form.search.value', 'test');
+            setTimeout(()=>{
+                expect(vm.form.$errors.search.expression).to.be.false;
+                done();
+            },0);
+        });
+
+        it('should not require non-required values', (done) => {
+            let data = {
+                form: {
+                    $valid: true,
+                    $errors: {},
+                    search: {
+                        type: 'test',
+                        value: '',
+                        validators: {
+                            expression: 'field.value == "test"'
+                        }
+                    }
+                }
+            };
+
+            createValidField(data);
+            expect(vm.form.$errors.search.expression).to.be.false;
+
+            vm.$set('form.search.value', 'testing');
+            setTimeout(()=>{
+                expect(vm.form.$errors.search.expression).to.be.true;
+                done();
+            },0);
+        });
+
+        it('should take a function', (done) => {
+            let data = {
+                form: {
+                    $valid: true,
+                    $errors: {},
+                    search: {
+                        type: 'test',
+                        value: 'testing',
+                        validators: {
+                            expression: function(field){
+                                return field.value == 'test';
+                            }
+                        }
+                    }
+                }
+            };
+
+            createValidField(data);
+            expect(vm.form.$errors.search.expression).to.be.true;
+
+            vm.$set('form.search.value', 'test');
+            setTimeout(()=>{
+                expect(vm.form.$errors.search.expression).to.be.false;
+                done();
+            },0);
         });
         
     });
