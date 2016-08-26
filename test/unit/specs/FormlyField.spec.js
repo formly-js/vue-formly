@@ -75,5 +75,57 @@ describe('FormlyField', () => {
         }, 0);
         
     });
+
+    describe('Validation', ()=>{
+
+        before(()=>{
+            Vue.component('formly_test', {
+                props: ['form', 'key'],
+                template: '<div></div>'
+            });
+        });
+
+        function createValidField(data){
+            return createForm('<formly-field :form.sync="form" key="search"></formly-field>', data);
+        };
+
+        it('should handle required values', (done) => {
+
+            let data = {
+                form: {
+                    $valid: true,
+                    $errors: {},
+                    search: {
+                        type: 'test',
+                        value: '',
+                        required: true
+                    }
+                }
+            };
+            
+            createValidField(data);
+            expect(vm.form.$errors.search.required).to.be.true;
+
+            vm.$set('form.search.value','testing');
+            setTimeout(()=>{
+                expect(vm.form.$errors.search).to.equal(undefined);
+                done();
+            },0);
+            
+        });
+
+        it('should take an expression', () => {
+            let data = {
+                form: {
+                    $valid: true,
+                    $errors: {},
+                    search: {
+                        
+                    }
+                }
+            };
+        });
+        
+    });
     
 });

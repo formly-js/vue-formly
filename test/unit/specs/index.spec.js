@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 
 import VueFormly from 'src/index';
-import Util, {addType, getTypes} from 'src/util';
+import Util, {addType, getTypes, addError, removeError} from 'src/util';
 
 
 describe('module', () => {
@@ -13,6 +13,8 @@ describe('module', () => {
         expect(VueFormly.getTypes).to.be.a('function');
         expect(addType).to.be.a('function');
         expect(getTypes).to.be.a('function');
+        expect(addError).to.be.a('function');
+        expect(removeError).to.be.a('function');
         expect(Util.formlyFields).to.be.a('object');
     });
 
@@ -30,6 +32,17 @@ describe('module', () => {
         };
         addType('test', newField);
         expect(getTypes().formly_test).to.deep.equal(newField);
+    });
+
+    it('should handle errors',()=>{
+        let form = {
+            '$errors': {}
+        };
+        addError(form, 'fname', 'required');
+        expect(form.$errors.fname.required).to.be.true;
+
+        removeError(form, 'fname', 'required');
+        expect(typeof form.$errors.fname).to.equal('undefined');
     });
     
 });
