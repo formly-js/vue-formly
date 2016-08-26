@@ -15,7 +15,14 @@
          
          //set our validation options
          this.$set('form.$errors', {});
-         this.$set('form.$valid', false);
+         this.$set('form.$valid', true);
+
+         this.$watch('form.$errors', (val) => {
+             let valid = false;
+             if ( Object.keys(this.form.$errors).length == 0 ) valid = true;
+             this.form.$valid = valid;
+             return valid;
+         });
      }
  }
 </script>

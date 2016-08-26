@@ -67,7 +67,7 @@ describe('FormlyForm', () => {
         expect(JSON.parse(vm.$el.querySelector('#lname_field').textContent)).to.deep.equal(data.form.lname);
         expect(JSON.parse(vm.$el.querySelector('#fname_field').textContent)).to.deep.equal({type: 'input', value: ''});
         expect(data.form.$errors).to.deep.equal({});
-        expect(data.form.$valid).to.be.false;
+        expect(data.form.$valid).to.be.true;
         
     });
 
@@ -100,6 +100,23 @@ describe('FormlyForm', () => {
         expect(vm.$el.querySelectorAll('.restricted-field')).to.be.length(1);
         expect(vm.$el.querySelectorAll('fieldset .restricted-field')).to.be.length(1);
         
+    });
+
+    it('should compute any errors', (done) => {
+        let data = {
+            form: {
+                
+            }
+        };
+        createForm('<formly-form :form="form"></formly-form>', data);
+        expect(vm.form.$errors).to.deep.equal({});
+        expect(vm.form.$valid).to.be.true;
+        vm.$set('form.$errors.test', 'testing');
+
+        setTimeout(()=>{
+            expect(vm.form.$valid).to.be.false;
+            done();
+        },0);
     });
     
 });
