@@ -132,5 +132,27 @@ describe('FormlyForm', () => {
             done();
         });
     });
+
+    it('should allow a manual display', () => {
+
+        Vue.component('formly-field',{
+            props: ['form', 'key'],
+            template: '<div class="testing"></div>'
+        });
+
+        let data = {
+            form: {
+                fname: {
+                    type: 'test'
+                }
+            }
+        };
+
+        createForm('<formly-form :form="form" :custom-layout="true"><div id="outside_loop"><formly-field></formly-field></div></formly-form>', data);
+
+        expect(vm.$el.querySelectorAll('.testing')).to.be.length(1);
+        expect(vm.$el.querySelectorAll('fieldset #outside_loop .testing')).to.be.length(1);
+        
+    });
     
 });

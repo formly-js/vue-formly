@@ -1,12 +1,15 @@
 <template>
   <fieldset>
+    <template v-if="!customLayout">
       <formly-field v-for="field in form | formlyFields" :form.sync="form" :key="field" ></formly-field>
+    </template>
+    <slot></slot>
   </fieldset>
 </template>
 
 <script>
  export default {
-     props: ['form'],
+     props: ['form', 'customLayout'],
      created(){
          //make sure that the 'value' is always set
          Object.keys(this.form).forEach((key) => {
