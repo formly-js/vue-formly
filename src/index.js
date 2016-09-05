@@ -1,18 +1,18 @@
 import Components from './components/index';
+import Filters from './filters/index';
 import Util,{getTypes, addType} from './util';
 
 
 let Formly = {
-    
+    getTypes,
+    addType,
     install(Vue, options){
-
-        if ( Formly.installed ){
-            return;
-        }
         
         //install our components
         Components(Vue);
-        
+        Filters(Vue);
+
+        Vue.$formly = {getTypes, addType};
     }
 };
 
