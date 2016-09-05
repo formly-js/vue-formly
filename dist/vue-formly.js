@@ -84,13 +84,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    getTypes: _util.getTypes,
 	    addType: _util.addType,
 	    install: function install(Vue, options) {
-
-	        if (Formly.installed) {
-	            return;
-	        }
-
 	        (0, _index2.default)(Vue);
 	        (0, _index4.default)(Vue);
+
+	        Vue.$formly = { getTypes: _util.getTypes, addType: _util.addType };
 	    }
 	};
 
@@ -174,7 +171,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = {
-	    props: ['form'],
+	    props: ['form', 'customLayout'],
 	    created: function created() {
 	        var _this = this;
 
@@ -681,7 +678,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 39 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<fieldset>\n    <formly-field v-for=\"field in form | formlyFields\" :form.sync=\"form\" :key=\"field\" ></formly-field>\n</fieldset>\n";
+	module.exports = "\n<fieldset>\n  <template v-if=\"!customLayout\">\n    <formly-field v-for=\"field in form | formlyFields\" :form.sync=\"form\" :key=\"field\" ></formly-field>\n  </template>\n  <slot></slot>\n</fieldset>\n";
 
 /***/ },
 /* 40 */

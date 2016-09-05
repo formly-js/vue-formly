@@ -7,14 +7,12 @@ let Formly = {
     getTypes,
     addType,
     install(Vue, options){
-
-        if ( Formly.installed ){
-            return;
-        }
         
         //install our components
         Components(Vue);
         Filters(Vue);
+
+        Vue.$formly = {getTypes, addType};
     }
 };
 
