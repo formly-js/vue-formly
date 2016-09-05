@@ -14,6 +14,6 @@ Or via a script
 Take a look at the [docs](https://www.gitbook.com/book/matt-sanders/vue-formly/details) for extended information about using Formly and creating custom input types.
 
 ## To Do
-* [ ] Implement validation
-* [ ] Better error handling
-* [ ] Simplified data access
+* [x] Implement validation
+* [x] Better error handling
+* [x] Simplified data access
