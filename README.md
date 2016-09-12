@@ -14,7 +14,44 @@ Or via a script
 <script src="your_dir/vue-formly/vue-formly.min.js"></script>
 ```
 ## Usage
-Take a look at the [docs](https://www.gitbook.com/book/matt-sanders/vue-formly/details) for extended information about using Formly and creating custom input types.
+Take a look at the [docs](https://www.gitbook.com/book/matt-sanders/vue-formly/details) for extended information about using Formly and creating custom input types. But here is a quick example:
+```html
+<div id="app">
+   <form @submit="handleSubmission">
+      <formly-form :form="form"></formly-form>
+      <button>Submit</button>
+   </form>
+</div>
+```
+```js
+new Vue({
+   el: '#app',
+   data: {
+      form: {
+         name: {
+            type: 'input',
+            required: true
+         },
+         email: {
+            type: 'input',
+            inputType: 'email',
+            required: true,
+            validators: {
+               validEmail: checkEmailFunction
+            }
+         },
+         password: {
+            type: 'input',
+            inputType: 'password',
+            required: true,
+            validators: {
+               validPassword: checkPasswordFunction
+            }
+         }
+      }
+   }
+});
+```
 
 ## To Do
 * [x] Implement validation
