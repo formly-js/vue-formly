@@ -115,59 +115,36 @@ describe('FormlyForm', () => {
     expect(vm.$el.querySelectorAll('fieldset .restricted-field')).to.be.length(1);
     
   });
-  /*
-     it('should compute any errors', (done) => {
-     let data = {
-     form: {
-     
-     }
-     };
-     createForm('<formly-form :form="form"></formly-form>', data);
-     expect(vm.form.$errors).to.deep.equal({});
-     expect(vm.form.$valid).to.be.true;
-     vm.$set('form.$errors.test', {foo: true});
+  
+  it('should compute any errors', (done) => {
+    let data = {
+      form: {},
+      model: {},
+      fields: []
+    };
+    createForm('<formly-form :form="form" :model="model" :fields="fields"></formly-form>', data);
+    expect(vm.form.$errors).to.deep.equal({});
+    expect(vm.form.$valid).to.be.true;
+    vm.$set(vm.form.$errors, 'test', {foo: true});
 
-     setTimeout(()=>{
-     expect(vm.form.$valid).to.be.false;
-     done();
-     },0);
-     });
+    setTimeout(()=>{
+      expect(vm.form.$valid).to.be.false;
+      done();
+    },0);
+  });
 
-     it('should skip empty errors', (done)=>{
-     let data = {
-     form: {
-
-     }
-     };
-     createForm('<formly-form :form="form"></formly-form>', data);
-     vm.$set('form.$errors.test', {foo: false});
-     setTimeout(() => {
-     expect(vm.form.$valid).to.be.true;
-     done();
-     });
-     });
-
-     it('should allow a manual display', () => {
-
-     Vue.component('formly-field',{
-     props: ['form', 'key'],
-     template: '<div class="testing"></div>'
-     });
-
-     let data = {
-     form: {
-     fname: {
-     type: 'test'
-     }
-     }
-     };
-
-     createForm('<formly-form :form="form" :custom-layout="true"><div id="outside_loop"><formly-field></formly-field></div></formly-form>', data);
-
-     expect(vm.$el.querySelectorAll('.testing')).to.be.length(1);
-     expect(vm.$el.querySelectorAll('fieldset #outside_loop .testing')).to.be.length(1);
-     
-     });
-   */    
+  it('should skip empty errors', (done)=>{
+    let data = {
+      form: {},
+      model: {},
+      fields: []
+    };
+    createForm('<formly-form :form="form" :model="model" :fields="fields"></formly-form>', data);
+    vm.$set(vm.form.$errors, 'test', {foo: false});
+    setTimeout(() => {
+      expect(vm.form.$valid).to.be.true;
+      done();
+    });
+  });
 });
 
