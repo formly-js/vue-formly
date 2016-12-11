@@ -161,57 +161,62 @@ describe('FormlyField', () => {
         done();
       },0);
     });
-    
-  });
-
-  /*
 
     it('should not require non-required values', (done) => {
       let data = {
         form: {
           $valid: true,
-          $errors: {},
-          search: {
+          $errors: {}
+        },
+        model: {
+          search: ''
+        },
+        fields: [
+          {
+            key: 'search',
             type: 'test',
-            value: '',
             validators: {
               expression: 'field.value == "test"'
             }
           }
-        }
+        ]
       };
 
       createValidField(data);
       expect(vm.form.$errors.search.expression).to.be.false;
 
-      vm.$set('form.search.value', 'testing');
+      vm.model.search = 'testing';
       setTimeout(()=>{
         expect(vm.form.$errors.search.expression).to.be.true;
         done();
       },0);
-    });
+    });  
 
     it('should take a function', (done) => {
       let data = {
         form: {
           $valid: true,
-          $errors: {},
-          search: {
+          $errors: {}
+        },
+        model: {
+          search: 'testing'
+        },
+        fields: [
+          {
+            key: 'search',
             type: 'test',
-            value: 'testing',
             validators: {
-              expression: function(field){
-                return field.value == 'test';
+              expression: function(field, model){
+                return model.search == 'test';
               }
             }
           }
-        }
+        ]
       };
 
       createValidField(data);
       expect(vm.form.$errors.search.expression).to.be.true;
-
-      vm.$set('form.search.value', 'test');
+      vm.model.search = 'test';
       setTimeout(()=>{
         expect(vm.form.$errors.search.expression).to.be.false;
         done();
@@ -219,6 +224,6 @@ describe('FormlyField', () => {
     });
     
   });
-  */    
+   
 });
 

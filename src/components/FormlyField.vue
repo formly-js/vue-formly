@@ -38,7 +38,7 @@
 
          let validator = this.field.validators[validKey];
 
-         let valid = typeof validator == 'function' ? !validator(field) : !eval(validator);
+         let valid = typeof validator == 'function' ? !validator(field, model) : !eval(validator);
          setError(this.form, this.field.key, validKey, valid);
          
        });
