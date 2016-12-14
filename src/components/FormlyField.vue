@@ -1,12 +1,12 @@
 <template>
-  <component :is="type" :form.sync="form" :field="field" :model="model"></component>
+  <component :is="type" :form.sync="form" :field="field" :model="model" :to="field.templateOptions"></component>
 </template>
 
 <script>
  const Vue = require('vue');
  import Util, {getTypes, setError} from '../util';
  export default {
-   props: ['form', 'model', 'field'],
+   props: ['form', 'model', 'field', 'to'],
    computed: {
      type:function(){
        return 'formly_'+this.field.type;
@@ -17,6 +17,7 @@
 
        //first check if we need to create a field
        if ( !this.form.$errors[this.field.key] ) this.$set(this.form.$errors, this.field.key, {});
+       if ( !this.field.templateOptions ) this.$set(this.field, 'templateOptions', {});
 
        //check for required fields. This whole setting,unsetting thing seems kind of wrong though..
        //there might be a more 'vue-ey' way to do this...

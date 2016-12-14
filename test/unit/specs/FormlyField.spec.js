@@ -90,6 +90,39 @@ describe('FormlyField', () => {
     
   });
 
+  it('Should pass template options', () => {
+
+    Vue.component('formly_test', {
+      props: ['form', 'field', 'model', 'to'],
+      template: '<div>{{to}}</div>'
+    });
+
+    let data = {
+      form: {
+        $errors: {},
+        $valid: {}
+      },
+      fields: [
+        {
+          key: 'search',
+          type: 'test',
+          templateOptions: {
+            foo: 'bar',
+            something: 'else'
+          }
+        }
+      ],
+      model: {
+        search: ''
+      }
+    };
+
+    createForm('<formly-field :form.sync="form" :field="fields[0]" :model="model"></formly-field>', data);
+
+    expect(JSON.parse(vm.$el.textContent)).to.deep.equal(data.fields[0].templateOptions);
+    
+  });
+
   
   describe('Validation', ()=>{
 
