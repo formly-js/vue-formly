@@ -56,7 +56,8 @@ module.exports = {
     packageAlias: 'browser',   
     alias: {
       'src': sourceDir,
-      'sinon': 'sinon/pkg/sinon'
+      'sinon': 'sinon/pkg/sinon',
+      'vue': 'vue/dist/vue.js'
     }
   },
   plugins: [

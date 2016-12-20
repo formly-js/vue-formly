@@ -12,147 +12,139 @@ Filters(Vue);
 
 //mock our formly-field component
 let FormlyField = Vue.extend({
-    template: '<div class="formly-field"><pre id="{{key}}_field">{{form[key] | json}}</pre><pre id="{{key}}_model">{{form[key].value | json}}</pre></div>',
-    props: ['form', 'key']
+  template: '<div class="formly-field"><pre :id="field.key+\'_field\'">{{field}}</pre><pre :id="field.key+\'_model\'">{{model[ field.key ]}}</pre></div>',
+  props: ['form', 'model', 'field']
 });
 
 //our formly specific field
 let FormlyRestrictedField = Vue.extend({
-    template: '<div class="restricted-field"></div>'
+  template: '<div class="restricted-field"></div>'
 });
 
 
 let el, vm;
 
 function createForm(template, data){
-    el = document.createElement('div');
-    el.innerHTML = template;
-    vm = new Vue({
-        el: el,
-        data: data
-    });
+  el = document.createElement('div');
+  //el.innerHTML = template;
+  vm = new Vue({
+    data: data,
+    template: template
+  }).$mount(el);
 
-    return [el, vm];
+  return [el, vm];
 }
+
 
 describe('FormlyForm', () => {
 
-    beforeEach( () => {
-        //ensure that our mocked component is there
-        Vue.component('formly-field', FormlyField);
-    });
+  beforeEach( () => {
+    //ensure that our mocked component is there
+    Vue.component('formly-field', FormlyField);
+  });
 
-    it('should create a subset of components with the right data', () => {
+  
+  it('should create a subset of components with the right data', () => {
 
-        let data = {
-            form: {
-                fname: {
-                    type: 'input'
-                },
-                lname: {
-                    type: 'input',
-                    value: 'smith'
-                }
-            }
-        };
+    let data = {
+      form: {},
+      model: {
+        fname: '',
+        lname: 'smith'
+      },
+      fields: [        
+        {
+          key: 'fname',
+          type: 'input'
+        },
+        {
+          key: 'lname',
+          type: 'input'
+        }
+      ]
+    };
 
-        createForm('<formly-form :form="form"></formly-form>', data);
+    createForm('<formly-form :form="form" :model="model" :fields="fields"></formly-form>', data);
 
-        //check the elements have been created
-        expect(vm.$el.querySelectorAll('fieldset')).to.be.length(1);
-        expect(vm.$el.querySelectorAll('.formly-field')).to.be.length(2);
+    //check the elements have been created
 
-        //check their data
-        expect(vm.$el.querySelector('#lname_model').textContent).to.contain('smith');
-        expect(JSON.parse(vm.$el.querySelector('#lname_field').textContent)).to.deep.equal(data.form.lname);
-        expect(JSON.parse(vm.$el.querySelector('#fname_field').textContent)).to.deep.equal({type: 'input', value: ''});
-        expect(data.form.$errors).to.deep.equal({});
-        expect(data.form.$valid).to.be.true;
-        
-    });
+    expect(vm.$el.tagName).to.equal('FIELDSET');
+    expect(vm.$el.querySelectorAll('.formly-field')).to.be.length(2);
 
-    it('should restrict some components to formly itself', () => {
-        sinon.spy(console, 'error');
-
-        //re-create the formly field
-        Vue.component('formly-field', (resolve) =>{
-            resolve({
-                props: ['form', 'key'],
-                template: '<component :is="form[key].type"></component>',
-                components: Vue.$formlyFields
-            });
-        });
-
-        Vue.$formlyFields = {
-            'restricted': FormlyRestrictedField
-        };
-
-        let data = {
-            form: {
-                fname: {
-                    type: 'restricted'
-                }
-            }
-        };
-        createForm('<formly-form :form="form"></formly-form><restricted></restricted>', data);
-
-        expect(console.error).to.be.called.once;
-        expect(vm.$el.querySelectorAll('.restricted-field')).to.be.length(1);
-        expect(vm.$el.querySelectorAll('fieldset .restricted-field')).to.be.length(1);
-        
-    });
-
-    it('should compute any errors', (done) => {
-        let data = {
-            form: {
-                
-            }
-        };
-        createForm('<formly-form :form="form"></formly-form>', data);
-        expect(vm.form.$errors).to.deep.equal({});
-        expect(vm.form.$valid).to.be.true;
-        vm.$set('form.$errors.test', {foo: true});
-
-        setTimeout(()=>{
-            expect(vm.form.$valid).to.be.false;
-            done();
-        },0);
-    });
-
-    it('should skip empty errors', (done)=>{
-        let data = {
-            form: {
-
-            }
-        };
-        createForm('<formly-form :form="form"></formly-form>', data);
-        vm.$set('form.$errors.test', {foo: false});
-        setTimeout(() => {
-            expect(vm.form.$valid).to.be.true;
-            done();
-        });
-    });
-
-    it('should allow a manual display', () => {
-
-        Vue.component('formly-field',{
-            props: ['form', 'key'],
-            template: '<div class="testing"></div>'
-        });
-
-        let data = {
-            form: {
-                fname: {
-                    type: 'test'
-                }
-            }
-        };
-
-        createForm('<formly-form :form="form" :custom-layout="true"><div id="outside_loop"><formly-field></formly-field></div></formly-form>', data);
-
-        expect(vm.$el.querySelectorAll('.testing')).to.be.length(1);
-        expect(vm.$el.querySelectorAll('fieldset #outside_loop .testing')).to.be.length(1);
-        
-    });
+    //check their data
     
+    expect(vm.$el.querySelector('#lname_model').textContent).to.contain('smith');
+    expect(JSON.parse(vm.$el.querySelector('#fname_field').textContent)).to.deep.equal(data.fields[0]);
+    expect(JSON.parse(vm.$el.querySelector('#lname_field').textContent)).to.deep.equal(data.fields[1]);
+    expect(data.form.$errors).to.deep.equal({});
+    expect(data.form.$valid).to.be.true;
+    
+  });
+
+  
+  it('should restrict some components to formly itself', () => {
+    sinon.spy(console, 'error');
+
+    //re-create the formly field
+    Vue.component('formly-field', (resolve) =>{
+      resolve({
+        props: ['form', 'model', 'field'],
+        template: '<component :is="field.type"></component>',
+        components: Vue.$formlyFields
+      });
+    });
+
+    Vue.$formlyFields = {
+      'restricted': FormlyRestrictedField
+    };
+
+    let data = {
+      form: {},
+      fields: [
+        {
+          key: 'fname',
+          type: 'restricted'
+        }
+      ],
+      model: {}
+    };
+    createForm('<div><formly-form :form="form" :fields="fields" :model="model"></formly-form><restricted></restricted></div>', data);
+
+    expect(console.error).to.be.called.once;
+    expect(vm.$el.querySelectorAll('.restricted-field')).to.be.length(1);
+    expect(vm.$el.querySelectorAll('fieldset .restricted-field')).to.be.length(1);
+    
+  });
+  
+  it('should compute any errors', (done) => {
+    let data = {
+      form: {},
+      model: {},
+      fields: []
+    };
+    createForm('<formly-form :form="form" :model="model" :fields="fields"></formly-form>', data);
+    expect(vm.form.$errors).to.deep.equal({});
+    expect(vm.form.$valid).to.be.true;
+    vm.$set(vm.form.$errors, 'test', {foo: true});
+
+    setTimeout(()=>{
+      expect(vm.form.$valid).to.be.false;
+      done();
+    },0);
+  });
+
+  it('should skip empty errors', (done)=>{
+    let data = {
+      form: {},
+      model: {},
+      fields: []
+    };
+    createForm('<formly-form :form="form" :model="model" :fields="fields"></formly-form>', data);
+    vm.$set(vm.form.$errors, 'test', {foo: false});
+    setTimeout(() => {
+      expect(vm.form.$valid).to.be.true;
+      done();
+    });
+  });
 });
+
