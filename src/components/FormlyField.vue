@@ -51,6 +51,24 @@
      this.$watch('model.'+this.field.key, (val) =>{
        let valid = this.validate();
      });
+   },
+   mounted(){
+     if ( !this.field.wrapper ) return;
+     
+     //create a temporary element
+     let wrapper = document.createElement('DIV');
+     //populate it with the wrapper string
+     wrapper.innerHTML = this.field.wrapper;
+     //get the parent
+     let parent = this.$el.parentNode;
+     //insert the wrapper before this element
+     parent.insertBefore(wrapper, this.$el);
+     //append the element to the new wrapper
+     wrapper.firstChild.appendChild( this.$el );
+     //move the new wrapper back to where it should be
+     parent.insertBefore(wrapper.firstChild, wrapper);
+     //remove the temporary element
+     parent.removeChild(wrapper);
    }
  }
 </script>

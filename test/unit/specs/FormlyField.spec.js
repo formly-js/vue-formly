@@ -6,16 +6,16 @@ import FormlyField from 'src/components/FormlyField.vue';
 let el, vm;
 
 function createForm(template, data){
-  el = document.createElement('div');
+  el = document.createElement('DIV');
+  document.body.appendChild(el);
   //el.innerHTML = template;
   vm = new Vue({
-    el: el,
     data: data,
     template: template,
     components: {
       'formly-field': FormlyField
     }
-  }).$mount();
+  }).$mount(el);
 
   return [el, vm];
 }
@@ -121,6 +121,35 @@ describe('FormlyField', () => {
 
     expect(JSON.parse(vm.$el.textContent)).to.deep.equal(data.fields[0].templateOptions);
     
+  });
+
+  it('Should take a wrapper string', () => {
+    Vue.component('formly_test', {
+      props: ['form', 'field', 'model', 'to'],
+      template: '<div></div>'
+    });
+    
+    let data = {
+      form: {
+        $errors: {},
+        $valid: {}
+      },
+      fields: [
+        {
+          key: 'wrapped',
+          type: 'test',
+          wrapper: '<div id="test_wrapper_element"></div>'
+        }
+      ],
+      model: {
+        wrapped: ''
+      }
+    };
+    createForm('<formly-field :form.sync="form" :field="fields[0]" :model="model"></formly-field>', data);
+
+    let parent = vm.$el.parentNode;
+    expect(parent.firstChild).to.equal(vm.$el);
+    expect(parent.id).to.equal('test_wrapper_element');    
   });
 
   
