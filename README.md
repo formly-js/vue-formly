@@ -14,7 +14,7 @@ Or via a script
 <script src="your_dir/vue-formly/vue-formly.min.js"></script>
 ```
 ## Usage
-Take a look at the [docs](https://www.gitbook.com/book/matt-sanders/vue-formly/content/v/2.0/) for extended information about using Formly and creating custom input types. But here is a quick example:
+Take a look at the [docs](https://matt-sanders.gitbooks.io/vue-formly/content/v/2.0/) for extended information about using Formly and creating custom input types. But here is a quick example:
 ```html
 <div id="app">
    <form @submit="handleSubmission">
