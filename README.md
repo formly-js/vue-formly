@@ -1,9 +1,9 @@
 # Vue Formly
 
-Vue Formly is a JS based form builder heavily inspired by [Angular Formly](http://angular-formly.com/). Vue Formly was designed to provide an easy way to keep your forms consistent and to remove bloat from your code. As there's no "one way" to design your forms, Vue Formly allows you to create custom input types which you can use in your form schemas. Vue Formly itself does not come with any inputs pre-loaded but a set of Bootsrap form inputs can be installed over at [Vue Formly Bootstrap](https://github.com/matt-sanders/vue-formly-bootstrap).
+Vue Formly is a JS based form builder heavily inspired by [Angular Formly](http://angular-formly.com/). Vue Formly was designed to provide an easy way to keep your forms consistent and to remove bloat from your code. As there's no "one way" to design your forms, Vue Formly allows you to create custom input types which you can use in your form schemas. Vue Formly itself does not come with any inputs pre-loaded but a set of Bootsrap form inputs can be installed over at [Vue Formly Bootstrap](https://github.com/formly-js/vue-formly-bootstrap).
 
 *NOTE*
-Not currently compatible with Vue 2.0. But it's on the list...
+This is version 2 of Vue Formly and is only compatible with Vue 2.x. If you are wanting to use this with Vue 1.x then check out the [Vue Formly 1 Branch](https://github.com/formly-js/vue-formly/tree/1.0).
 
 ## Installation
 ```
@@ -14,11 +14,11 @@ Or via a script
 <script src="your_dir/vue-formly/vue-formly.min.js"></script>
 ```
 ## Usage
-Take a look at the [docs](https://www.gitbook.com/book/matt-sanders/vue-formly/details) for extended information about using Formly and creating custom input types. But here is a quick example:
+Take a look at the [docs](https://www.gitbook.com/book/matt-sanders/vue-formly/content/v/2.0/) for extended information about using Formly and creating custom input types. But here is a quick example:
 ```html
 <div id="app">
    <form @submit="handleSubmission">
-      <formly-form :form="form"></formly-form>
+      <formly-form :form="form" :model="model" :fields="fields"></formly-form>
       <button>Submit</button>
    </form>
 </div>
@@ -27,34 +27,40 @@ Take a look at the [docs](https://www.gitbook.com/book/matt-sanders/vue-formly/d
 new Vue({
    el: '#app',
    data: {
-      form: {
-         name: {
+      model: {
+         name: '',
+         email: '',
+         password: ''
+      },
+      form: [
+         {
+            key: 'name',
             type: 'input',
             required: true
          },
-         email: {
+         {
+            key: 'email',
             type: 'input',
-            inputType: 'email',
+            templateOptions: {
+               type: 'email'
+            },
             required: true,
             validators: {
                validEmail: checkEmailFunction
             }
          },
-         password: {
+         {
+            key: 'password',
             type: 'input',
-            inputType: 'password',
+            templateOptions: {
+               type: 'password'
+            },
             required: true,
             validators: {
                validPassword: checkPasswordFunction
             }
          }
-      }
+      ]
    }
 });
 ```
-
-## To Do
-* [x] Implement validation
-* [x] Better error handling
-* [x] Simplified data access
-* [ ] Implement Vue 2.0 compatibility
