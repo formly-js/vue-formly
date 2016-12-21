@@ -1,5 +1,5 @@
 /**
- * vue-formly v2.0.0
+ * vue-formly v2.1.0
  * https://github.com/matt-sanders/vue-formly
  * Released under the MIT License.
  */
@@ -772,6 +772,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.$watch('model.' + this.field.key, function (val) {
 	      var valid = _this2.validate();
 	    });
+	  },
+	  mounted: function mounted() {
+	    if (!this.field.wrapper) return;
+
+	    var wrapper = document.createElement('DIV');
+
+	    wrapper.innerHTML = this.field.wrapper;
+
+	    var parent = this.$el.parentNode;
+
+	    parent.insertBefore(wrapper, this.$el);
+
+	    wrapper.firstChild.appendChild(this.$el);
+
+	    parent.insertBefore(wrapper.firstChild, wrapper);
+
+	    parent.removeChild(wrapper);
 	  }
 	};
 
