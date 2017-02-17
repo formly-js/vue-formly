@@ -25,7 +25,7 @@ export function getTypes(){
  * @param {String} err
  * @param {Bool} isError
  */
-export function setError(form, key, err, isError){
+export function setError(form, key, err, isError, message = false){
     if ( !form.$errors[key] ) form.$errors[key] = {};
-    form.$errors[key][err] = isError;
+    form.$errors[key][err] = message || isError;
 }

@@ -38,9 +38,19 @@
          if ( !this.field.required && !this.model[ this.field.key ] ) return;
 
          let validator = this.field.validators[validKey];
+         let validatorMessage = false;
 
+         if ( typeof validator === 'object' ){
+           if ( !( 'message' in validator ) ){
+             console.error( "Looks like you've set a validator object without setting a message. If you don't need to explicity set the message just define the validator as either an expression or a function. Refer to the docs for more info");
+           } else {
+             validatorMessage = validator.message;
+             validator = validator.expression;
+           }
+         }
+         
          let valid = typeof validator == 'function' ? !validator(field, model) : !eval(validator);
-         setError(this.form, this.field.key, validKey, valid);
+         setError(this.form, this.field.key, validKey, valid, validatorMessage);
          
        });
      }

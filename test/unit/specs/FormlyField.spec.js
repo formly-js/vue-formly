@@ -284,6 +284,55 @@ describe('FormlyField', () => {
         done();
       },0);
     });
+
+    describe("Validation Messages", (done) => {
+
+      //what do we want to do
+
+      //--- define messages ---
+      //vf.addValidationString('validatorKey', 'message');
+      //vf.addValidationPattern('validatorKey', '%l is required');
+      //vf.addValidationPattern('validatorKey', '%v is too small');
+
+      //add specific messages
+      /*
+       * validators: {
+       *    test: {
+       *      expression: function(){},
+       *      message: '%l requires 10, you entered %s'
+       *    }
+       * }
+       */
+
+      it('Inline messages', () => {
+        let data = {
+          form: {
+            $valid: true,
+            $errors: {}
+          },
+          model: {
+            search: 'testing'
+          },
+          fields: [
+            {
+              key: 'search',
+              type: 'test',
+              validators: {
+                validatorMessage:
+                {
+                  expression: 'model.search == "test"',
+                  message: 'Must equal test'
+                }
+              }
+            }
+          ]
+        };
+
+        createValidField(data);
+        expect(vm.form.$errors.search.validatorMessage).to.equal('Must equal test');
+      });
+      
+    });
     
   });
    
