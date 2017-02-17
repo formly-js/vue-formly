@@ -4,7 +4,7 @@
 
 <script>
  const Vue = require('vue');
- import Util, {getTypes, setError} from '../util';
+ import Util, {getTypes, setError, parseValidationString} from '../util';
  export default {
    props: ['form', 'model', 'field', 'to'],
    computed: {
@@ -48,6 +48,9 @@
              validator = validator.expression;
            }
          }
+         
+         let label = ( 'templateOptions' in this.field ) && ( 'label' in this.field.templateOptions ) ? this.field.templateOptions.label : '';
+         validatorMessage = parseValidationString( validKey, validatorMessage, label, model[ this.field.key ] );
          
          let valid = typeof validator == 'function' ? !validator(field, model) : !eval(validator);
          setError(this.form, this.field.key, validKey, valid, validatorMessage);

@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 
 import VueFormly from 'src/index';
-import Util, {addType, getTypes, setError} from 'src/util';
+import Util, {addType, getTypes, setError, addValidationMessage, parseValidationString} from 'src/util';
 
 
 describe('module', () => {
@@ -11,13 +11,14 @@ describe('module', () => {
     expect(VueFormly.install).to.be.a('function');
     expect(VueFormly.addType).to.be.a('function');
     expect(VueFormly.getTypes).to.be.a('function');
+    expect(VueFormly.addValidationMessage).to.be.a('function');
     expect(addType).to.be.a('function');
     expect(getTypes).to.be.a('function');
     expect(setError).to.be.a('function');
     expect(Util.formlyFields).to.be.a('object');
   });
 
-  it('should add fields to Vue', () => {
+  it('addType()', () => {
 
     //mock vue
     window.Vue = {
@@ -33,7 +34,7 @@ describe('module', () => {
     expect(getTypes().formly_test).to.deep.equal(newField);
   });
 
-  it('should handle errors',()=>{
+  it('setError()',()=>{
     let form = {
       $errors: {}
     };
@@ -45,6 +46,25 @@ describe('module', () => {
 
     setError(form, 'fname', 'required', true, 'Hey there');
     expect(form.$errors.fname.required).to.equal('Hey there');
+  });
+
+  it('addValidationMessage()', () => {
+    addValidationMessage('test', 'testing');
+    expect(Util.validationMessages.test).to.equal('testing');
+  });
+
+  it('parseValidationString()', () => {
+    addValidationMessage('parseTest', '%l just %v testing');
+    let message = '%l just %v testing';
+    let expected = 'label just value testing';
+    let output = parseValidationString('parseTest', false, 'label', 'value');
+    expect(output).to.equal(expected);
+    
+    output = parseValidationString(false, message, 'label', 'value');
+    expect(output).to.equal(expected);
+
+    output = parseValidationString('blahblahblah', false, '', '');
+    expect(output).to.be.false;
   });
   
 });
