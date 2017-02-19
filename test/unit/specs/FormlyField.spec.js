@@ -2,6 +2,7 @@ import chai from 'chai';
 const expect = chai.expect;
 import Vue from 'vue';
 import FormlyField from 'src/components/FormlyField.vue';
+import Utils from 'src/util';
 
 let el, vm;
 
@@ -283,6 +284,114 @@ describe('FormlyField', () => {
         expect(vm.form.$errors.search.expression).to.be.false;
         done();
       },0);
+    });
+
+    describe("Validation Messages", (done) => {
+
+      //what do we want to do
+
+      //--- define messages ---
+      //vf.addValidationString('validatorKey', 'message');
+
+      //add specific messages
+      /*
+       * validators: {
+       *    test: {
+       *      expression: function(){},
+       *      message: '%l requires 10, you entered %s'
+       *    }
+       * }
+       */
+
+      it('Inline messages', () => {
+        let data = {
+          form: {
+            $valid: true,
+            $errors: {}
+          },
+          model: {
+            search: 'testing'
+          },
+          fields: [
+            {
+              key: 'search',
+              type: 'test',
+              validators: {
+                validatorMessage:
+                {
+                  expression: 'model.search == "test"',
+                  message: 'Must equal test'
+                }
+              }
+            }
+          ]
+        };
+
+        createValidField(data);
+        expect(vm.form.$errors.search.validatorMessage).to.equal('Must equal test');
+      });
+
+      it('Inline messages with values parsed', () => {
+        let data = {
+          form: {
+            $valid: true,
+            $errors: {}
+          },
+          model: {
+            search: 'testing'
+          },
+          fields: [
+            {
+              key: 'search',
+              type: 'test',
+              templateOptions: {
+                label: 'test'
+              },
+              validators: {
+                validatorMessage:
+                {
+                  expression: 'model.search == "test"',
+                  message: '%l and %v'
+                }
+              }
+            }
+          ]
+        };
+
+        createValidField(data);
+        expect(vm.form.$errors.search.validatorMessage).to.equal('test and testing');
+      });
+
+      it('Global messages with values parsed', () => {
+        let data = {
+          form: {
+            $valid: true,
+            $errors: {}
+          },
+          model: {
+            search: 'testing'
+          },
+          fields: [
+            {
+              key: 'search',
+              type: 'test',
+              templateOptions: {
+                label: 'test'
+              },
+              validators: {
+                validatorMessage: 'model.search == "test"',
+              }
+            }
+          ]
+        };
+
+        //just mock the other vue functions
+        Utils.validationMessages.validatorMessage = '%l and %v';
+        
+        createValidField(data);
+        expect(vm.form.$errors.search.validatorMessage).to.equal('test and testing');
+      });
+      
     });
     
   });
