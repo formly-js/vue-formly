@@ -46,6 +46,9 @@ describe('module', () => {
 
     setError(form, 'fname', 'required', true, 'Hey there');
     expect(form.$errors.fname.required).to.equal('Hey there');
+
+    setError(form, 'fname', 'required', false, 'Hey there');
+    expect(form.$errors.fname.required).to.be.false;
   });
 
   it('addValidationMessage()', () => {

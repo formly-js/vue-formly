@@ -28,7 +28,7 @@ export function getTypes(){
  */
 export function setError(form, key, err, isError, message = false){
   if ( !form.$errors[key] ) form.$errors[key] = {};
-  form.$errors[key][err] = message || isError;
+  form.$errors[key][err] = isError ? message || isError : false;
 }
 
 /**
