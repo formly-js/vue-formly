@@ -51,8 +51,14 @@
          
          let label = ( 'templateOptions' in this.field ) && ( 'label' in this.field.templateOptions ) ? this.field.templateOptions.label : '';
          validatorMessage = parseValidationString( validKey, validatorMessage, label, model[ this.field.key ] );
-         
-         let valid = typeof validator == 'function' ? !validator(field, model) : !eval(validator);
+
+         let valid = false;
+         if ( typeof validator === 'function' ){
+           valid = !validator(field, model);
+         } else {
+           let res = new Function('model', 'field', 'return '+validator+';' );
+           valid = !res.call({}, model, field);
+         }
          setError(this.form, this.field.key, validKey, valid, validatorMessage);
          
        });
