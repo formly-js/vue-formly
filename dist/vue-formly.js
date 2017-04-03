@@ -1,5 +1,5 @@
 /**
- * vue-formly v2.2.0
+ * vue-formly v2.2.1
  * https://github.com/matt-sanders/vue-formly
  * Released under the MIT License.
  */
@@ -777,7 +777,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var label = 'templateOptions' in _this.field && 'label' in _this.field.templateOptions ? _this.field.templateOptions.label : '';
 	        validatorMessage = (0, _util.parseValidationString)(validKey, validatorMessage, label, model[_this.field.key]);
 
-	        var valid = typeof validator == 'function' ? !validator(field, model) : !eval(validator);
+	        var valid = false;
+	        if (typeof validator === 'function') {
+	          valid = !validator(field, model);
+	        } else {
+	          var res = new Function('model', 'field', 'return ' + validator + ';');
+	          valid = !res.call({}, model, field);
+	        }
 	        (0, _util.setError)(_this.form, _this.field.key, validKey, valid, validatorMessage);
 	      });
 	    }
