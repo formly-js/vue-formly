@@ -54,12 +54,19 @@
 
          let valid = false;
          if ( typeof validator === 'function' ){
-           valid = !validator(field, model);
+           //valid = !validator(field, model);
+           // setup for async validation
+           validator(field, model, (asyncValid = false, asyncValidatorMessage = validatorMessage) => {
+             // whenever validation is done via a function we will assume it's asynchronous and will require next() to be called
+             // this way it doesn't matter if it's async or not, next() should always be called
+             console.log(this.form);
+             setError(this.form, this.field.key, validKey, !asyncValid, asyncValidatorMessage);
+           });
          } else {
            let res = new Function('model', 'field', 'return '+validator+';' );
            valid = !res.call({}, model, field);
+           setError(this.form, this.field.key, validKey, valid, validatorMessage);
          }
-         setError(this.form, this.field.key, validKey, valid, validatorMessage);
          
        });
      }

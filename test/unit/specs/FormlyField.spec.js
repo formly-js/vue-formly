@@ -269,8 +269,10 @@ describe('FormlyField', () => {
             key: 'search',
             type: 'test',
             validators: {
-              expression: function(field, model){
-                return model.search == 'test';
+              expression: function(field, model, next){
+                let valid = model.search == 'test';
+                next( valid );
+                //return model.search == 'test';
               }
             }
           }
@@ -284,6 +286,43 @@ describe('FormlyField', () => {
         expect(vm.form.$errors.search.expression).to.be.false;
         done();
       },0);
+    });
+
+    it('Async Validation', (done) => {
+      let data = {
+        form: {
+          $valid: true,
+          $errors: {}
+        },
+        model: {
+          search: 'testing'
+        },
+        fields: [
+          {
+            key: 'search',
+            type: 'test',
+            validators: {
+              asyncExpression: function(field, model, next){
+                console.log('--- first timeout here');
+                let valid = model.search == 'test';
+                setTimeout( function(){
+                  console.log('--------------- timeout here');
+                  next( valid );
+                }, 500);
+              }
+            }
+          }
+        ]
+      };
+
+      createValidField(data);
+      console.log('expression is ', vm.form.$errors.search.asyncExpression);
+      expect(vm.form.$errors.search.asyncExpression).to.be.true;
+      vm.model.search = 'test';
+      setTimeout(()=>{
+        //expect(vm.form.$errors.search.expression).to.be.false;
+        //done();
+      },1000);
     });
 
     describe("Validation Messages", (done) => {
@@ -320,6 +359,37 @@ describe('FormlyField', () => {
                 validatorMessage:
                 {
                   expression: 'model.search == "test"',
+                  message: 'Must equal test'
+                }
+              }
+            }
+          ]
+        };
+
+        createValidField(data);
+        expect(vm.form.$errors.search.validatorMessage).to.equal('Must equal test');
+      });
+
+      it('Inline messages with a function', () => {
+        let data = {
+          form: {
+            $valid: true,
+            $errors: {}
+          },
+          model: {
+            search: 'testing'
+          },
+          fields: [
+            {
+              key: 'search',
+              type: 'test',
+              validators: {
+                validatorMessage:
+                {
+                  expression: function(field, model, next){
+                    let valid = model.search == "test";
+                    next(valid);
+                  },
                   message: 'Must equal test'
                 }
               }
