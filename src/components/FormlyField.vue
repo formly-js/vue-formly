@@ -54,13 +54,16 @@
 
          let valid = false;
          if ( typeof validator === 'function' ){
-           //valid = !validator(field, model);
+	   //set the asynchronous flag so that we know it's going
+	   let asyncKey = '$async_'+validKey;
+	   this.$set(this.form.$errors[ this.field.key ], asyncKey, true);
+	   
            // setup for async validation
            validator(field, model, (asyncValid = false, asyncValidatorMessage = validatorMessage) => {
              // whenever validation is done via a function we will assume it's asynchronous and will require next() to be called
              // this way it doesn't matter if it's async or not, next() should always be called
-             console.log(this.form);
              setError(this.form, this.field.key, validKey, !asyncValid, asyncValidatorMessage);
+	     this.$set(this.form.$errors[ this.field.key ], asyncKey, false);
            });
          } else {
            let res = new Function('model', 'field', 'return '+validator+';' );

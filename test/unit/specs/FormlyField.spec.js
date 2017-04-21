@@ -303,10 +303,8 @@ describe('FormlyField', () => {
             type: 'test',
             validators: {
               asyncExpression: function(field, model, next){
-                console.log('--- first timeout here');
                 let valid = model.search == 'test';
                 setTimeout( function(){
-                  console.log('--------------- timeout here');
                   next( valid );
                 }, 500);
               }
@@ -316,12 +314,14 @@ describe('FormlyField', () => {
       };
 
       createValidField(data);
-      console.log('expression is ', vm.form.$errors.search.asyncExpression);
-      expect(vm.form.$errors.search.asyncExpression).to.be.true;
-      vm.model.search = 'test';
+      expect(vm.form.$errors.search.asyncExpression).to.be.false;
+      expect(vm.form.$errors.search.$async_asyncExpression).to.be.true;
+      vm.model.search = 'test';      
       setTimeout(()=>{
-        //expect(vm.form.$errors.search.expression).to.be.false;
-        //done();
+        expect(vm.form.$errors.search.asyncExpression).to.be.false;
+	expect(vm.form.$errors.search.$async_asyncExpression).to.be.false;
+	expect(vm.form.$valid).to.be.true;
+        done();
       },1000);
     });
 
