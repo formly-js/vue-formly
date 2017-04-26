@@ -33,7 +33,8 @@ new Vue({
          email: '',
          password: ''
       },
-      form: [
+      form: {},
+      fields: [
          {
             key: 'name',
             type: 'input',
