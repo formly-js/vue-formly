@@ -1,5 +1,5 @@
 /**
- * vue-formly v2.3.1
+ * vue-formly v2.3.2
  * https://github.com/matt-sanders/vue-formly
  * Released under the MIT License.
  */
@@ -760,7 +760,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      (0, _keys2.default)(this.field.validators).forEach(function (validKey) {
 	        if (!_this.form.$errors[_this.field.key][validKey]) _this.$set(_this.form.$errors[_this.field.key], validKey, false);
-	        if (!_this.field.required && !_this.model[_this.field.key]) return;
+	        if (!_this.field.required && !_this.model[_this.field.key]) {
+	          (0, _util.setError)(_this.form, _this.field.key, validKey, false);
+	          return;
+	        }
 
 	        var validator = _this.field.validators[validKey];
 	        var validatorMessage = false;
