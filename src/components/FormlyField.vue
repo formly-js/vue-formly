@@ -18,14 +18,14 @@
        //first check if we need to create a field
        if ( !this.form.$errors[this.field.key] ) this.$set(this.form.$errors, this.field.key, {});
        if ( !this.field.templateOptions ) this.$set(this.field, 'templateOptions', {});
-
+       
        //check for required fields. This whole setting,unsetting thing seems kind of wrong though..
        //there might be a more 'vue-ey' way to do this...
        if ( this.field.required ){
          if ( !this.form.$errors[this.field.key].required ) this.$set(this.form.$errors[ this.field.key ], 'required', true);
          setError(this.form, this.field.key, 'required', !this.model[ this.field.key ]) ;
        }
-
+       
        //if we've got nothing left then return
        if ( !this.field.validators ) return;
 
@@ -35,7 +35,10 @@
        
        Object.keys(this.field.validators).forEach((validKey) => {
          if ( !this.form.$errors[this.field.key][validKey] ) this.$set(this.form.$errors[ this.field.key ], validKey, false);
-         if ( !this.field.required && !this.model[ this.field.key ] ) return;
+         if ( !this.field.required && !this.model[ this.field.key ] ) {
+	   setError(this.form, this.field.key, validKey, false);
+	   return;
+	 }
 
          let validator = this.field.validators[validKey];
          let validatorMessage = false;
