@@ -3,6 +3,9 @@ const expect = chai.expect;
 import Vue from 'vue';
 import FormlyField from 'src/components/FormlyField.vue';
 import Utils from 'src/util';
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
+chai.use(sinonChai);
 
 let el, vm;
 
@@ -166,6 +169,36 @@ describe('FormlyField', () => {
     function createValidField(data){
       return createForm('<formly-field :form.sync="form" :field="fields[0]" :model="model"></formly-field>', data);
     };
+
+    it('should return a promise', (done)=>{
+      let data = {
+        form: {
+          $valid: true,
+          $errors: {}
+        },
+        model: {
+          search: ''
+        },
+        fields: [
+          {
+            key: 'search',
+            type: 'test',
+            required: true
+          }
+        ]
+      };
+      createValidField(data);
+      let cb = sinon.spy();
+
+      let prom = vm.$children[0].validate();
+      expect(typeof prom.then).to.equal('function');
+
+      prom.then(()=>cb());
+      setTimeout(()=>{
+	cb.should.be.called;
+	done();
+      });
+    });
 
     it('should handle required values', (done) => {
 
