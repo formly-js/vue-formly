@@ -14,10 +14,12 @@ export default {
 	let count = 0;
 	this.fields.forEach( field => {
 	  this.$set( this.form[ field.key ], '$dirty', true );
-	  console.log(this.$refs[ field.key ][0]);
-	  //this.$refs[ field.key ][0].validate();
+	  this.$refs[ field.key ][0].validate()
+	    .then(()=>{
+	      count++;
+	      if( target == count ) resolve();
+	    });
 	});
-	resolve();
       });
     }
   },

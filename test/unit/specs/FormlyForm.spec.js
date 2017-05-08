@@ -166,45 +166,38 @@ describe('FormlyForm', () => {
       form: {
 	validTest: {
 	  $dirty: false
+	},
+	validTest2: {
+	  $dirty: false
 	}
       },
-      model: {validTest:''},
+      model: {validTest:'', validTest2: ''},
       fields: [{
 	key: 'validTest',
 	type: 'input'
-      }]
+      },
+	{
+	  key: 'validTest2',
+	  type: 'input'
+	}]
     };
 
     el = document.createElement('DIV');
     document.body.appendChild(el);
+    Vue.component('formly-field', ValidField);
     vm = new Vue({
       data: data,
-      template: '<formly-form :form="form" :model="model" :fields="fields"></formly-form>',
-      components: {
-	'formly-field': ValidField
-      }
+      template: '<formly-form :form="form" :model="model" :fields="fields"></formly-form>'
     }).$mount(el);
     
     
     let spy = sinon.spy();
 
     let prom = vm.$children[0].validate();
-    prom.then(()=>{
-      console.log('prom.then');
-    })
-      .catch((e)=>{
-	console.log('prom.catch', e);
-      });
-    return done();
-    expect(typeof prom.then).to.equal('function');
-    prom
-      .then(()=>spy())
-      .catch(()=>{
-
-      });
-    return done();
+    prom.then(()=>spy());
     setTimeout(()=>{
-      spy.should.be.called;
+      spy.should.be.calledOnce;
+      formlyFieldSpy.should.be.calledTwice;
       done();
     });
   });
