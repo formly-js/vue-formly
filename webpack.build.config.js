@@ -25,13 +25,18 @@ module.exports = [
             libraryTarget: "umd"
         },
 
-        plugins: [
-            new webpack.optimize.DedupePlugin(),
+      plugins: [
             new webpack.DefinePlugin({
                 'process.env' : {
                     NODE_ENV : JSON.stringify('production')
                 }
             }),
+	  new webpack.optimize.UglifyJsPlugin({
+				compress: {
+					warnings: false
+				}
+	  }),
+	new webpack.optimize.DedupePlugin(),
             new webpack.BannerPlugin(banner, {
                 raw: true
             }),
@@ -81,7 +86,7 @@ module.exports = [
         ],
 
         module: {
-            loaders: loaders
+          loaders: loaders
         },
 
         resolve: {
