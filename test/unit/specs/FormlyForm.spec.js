@@ -146,5 +146,60 @@ describe('FormlyForm', () => {
       done();
     });
   });
+
+  it('validate()', (done)=>{
+    let formlyFieldSpy = sinon.spy();
+    let ValidField = Vue.extend({
+      template: '<h1>ValidationField</h1>',
+      props: ['form', 'model', 'field'],
+      methods: {
+	validate(){
+	  return new Promise(function(resolve, reject){
+	    formlyFieldSpy();
+	    resolve();
+	  });
+	}
+      }
+    });
+
+    let data = {
+      form: {
+	validTest: {
+	  $dirty: false
+	},
+	validTest2: {
+	  $dirty: false
+	}
+      },
+      model: {validTest:'', validTest2: ''},
+      fields: [{
+	key: 'validTest',
+	type: 'input'
+      },
+	{
+	  key: 'validTest2',
+	  type: 'input'
+	}]
+    };
+
+    el = document.createElement('DIV');
+    document.body.appendChild(el);
+    Vue.component('formly-field', ValidField);
+    vm = new Vue({
+      data: data,
+      template: '<formly-form :form="form" :model="model" :fields="fields"></formly-form>'
+    }).$mount(el);
+    
+    
+    let spy = sinon.spy();
+
+    let prom = vm.$children[0].validate();
+    prom.then(()=>spy());
+    setTimeout(()=>{
+      spy.should.be.calledOnce;
+      formlyFieldSpy.should.be.calledTwice;
+      done();
+    });
+  });
 });
 
