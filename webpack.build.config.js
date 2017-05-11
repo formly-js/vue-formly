@@ -32,9 +32,8 @@ module.exports = [
                 }
             }),
 	  new webpack.optimize.UglifyJsPlugin({
-				compress: {
-					warnings: false
-				}
+	    compress: false,
+	    mangle: false
 	  }),
 	new webpack.optimize.DedupePlugin(),
             new webpack.BannerPlugin(banner, {

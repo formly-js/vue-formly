@@ -18,6 +18,9 @@ export default {
 	    .then(()=>{
 	      count++;
 	      if( target == count ) resolve();
+	    })
+	    .catch((e)=>{
+	      reject(e);
 	    });
 	});
       });
