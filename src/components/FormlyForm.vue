@@ -1,6 +1,6 @@
 <template>
   <fieldset>
-    <formly-field :ref="field.key" v-for="field in fields" :form.sync="form" :model.sync="model" :field="field"></formly-field>
+    <formly-field :ref="field.key" v-for="field in fields" :form.sync="form" :model.sync="model" :field="field" :key="'formly_'+field.key"></formly-field>
     <slot></slot>
   </fieldset>
 </template>
