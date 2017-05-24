@@ -101,7 +101,7 @@ describe('FormlyForm', () => {
       ]
     };
 
-    createForm('<formly-form :form="form" :model="model" :fields="fields" custom-layout="true"><formly-field :form.sync="form" :model.sync="model" :field="fields[0]"></formly-field></formly-form>', data);
+    createForm('<formly-form :form="form" :model="model" :fields="fields" custom-layout="true"><template scope="f"><formly-field :form.sync="form" :model.sync="model" :field="f.keys.fname"></formly-field></template></formly-form>', data);
 
     //check the elements have been created
     expect(vm.$el.querySelectorAll('.formly-field')).to.be.length(1);

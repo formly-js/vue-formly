@@ -1,7 +1,7 @@
 <template>
   <fieldset>
     <formly-field v-if="!customLayout" :ref="field.key" v-for="field in fields" :form.sync="form" :model.sync="model" :field="field" :key="'formly_'+field.key"></formly-field>
-    <slot></slot>
+    <slot :keys="keys"></slot>
   </fieldset>
 </template>
 
@@ -27,6 +27,15 @@ export default {
     }
   },
   props: ['form', 'model', 'fields', 'customLayout'],
+  computed:{
+    keys(){
+      let keys = {};
+      this.fields.forEach( field => {
+	keys[field.key] = field;
+      });
+      return keys;
+    }
+  },
   created(){
 
     //make sure that the 'value' is always set
