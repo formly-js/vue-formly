@@ -81,6 +81,38 @@ describe('FormlyForm', () => {
     
   });
 
+  it('Should not display fields if custom-layout is set', () => {
+
+    let data = {
+      form: {},
+      model: {
+        fname: '',
+        lname: 'smith'
+      },
+      fields: [        
+        {
+          key: 'fname',
+          type: 'input'
+        },
+        {
+          key: 'lname',
+          type: 'input'
+        }
+      ]
+    };
+
+    createForm('<formly-form :form="form" :model="model" :fields="fields" custom-layout="true"><formly-field :form.sync="form" :model.sync="model" :field="fields[0]"></formly-field></formly-form>', data);
+
+    //check the elements have been created
+    expect(vm.$el.querySelectorAll('.formly-field')).to.be.length(1);
+
+    //check their data
+    expect(JSON.parse(vm.$el.querySelector('#fname_field').textContent)).to.deep.equal(data.fields[0]);
+    expect(data.form.$errors).to.deep.equal({});
+    expect(data.form.$valid).to.be.true;
+    
+  });
+
   
   it('should restrict some components to formly itself', () => {
     sinon.spy(console, 'error');

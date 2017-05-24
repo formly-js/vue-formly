@@ -1,6 +1,6 @@
 <template>
   <fieldset>
-    <formly-field :ref="field.key" v-for="field in fields" :form.sync="form" :model.sync="model" :field="field" :key="'formly_'+field.key"></formly-field>
+    <formly-field v-if="!customLayout" :ref="field.key" v-for="field in fields" :form.sync="form" :model.sync="model" :field="field" :key="'formly_'+field.key"></formly-field>
     <slot></slot>
   </fieldset>
 </template>
@@ -26,7 +26,7 @@ export default {
       });
     }
   },
-  props: ['form', 'model', 'fields'],
+  props: ['form', 'model', 'fields', 'customLayout'],
   created(){
 
     //make sure that the 'value' is always set
