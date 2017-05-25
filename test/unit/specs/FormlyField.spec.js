@@ -478,6 +478,7 @@ describe('FormlyField', () => {
             {
               key: 'search',
               type: 'test',
+	      required: true,
               templateOptions: {
                 label: 'test'
               },
@@ -493,6 +494,34 @@ describe('FormlyField', () => {
         
         createValidField(data);
         expect(vm.form.$errors.search.validatorMessage).to.equal('test and testing');
+      });
+
+      it('Global required message', () => {
+        let data = {
+          form: {
+            $valid: true,
+            $errors: {}
+          },
+          model: {
+            search: ''
+          },
+          fields: [
+            {
+              key: 'search',
+              type: 'test',
+	      required: true,
+              templateOptions: {
+                label: 'test'
+              }
+            }
+          ]
+        };
+
+        //just mock the other vue functions
+        Utils.validationMessages.required = 'hello world';
+        
+        createValidField(data);
+	expect(vm.form.$errors.search.required).to.equal('hello world');
       });
       
     });

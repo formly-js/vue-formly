@@ -4,7 +4,7 @@
 
 <script>
  const Vue = require('vue');
- import Util, {getTypes, setError, parseValidationString} from '../util';
+ import Util, {getTypes, setError, parseValidationString } from '../util';
  export default {
    props: ['form', 'model', 'field', 'to'],
    computed: {
@@ -19,12 +19,15 @@
 	 //first check if we need to create a field
 	 if ( !this.form.$errors[this.field.key] ) this.$set(this.form.$errors, this.field.key, {});
 	 if ( !this.field.templateOptions ) this.$set(this.field, 'templateOptions', {});
+
+	 let label = ( 'templateOptions' in this.field ) && ( 'label' in this.field.templateOptions ) ? this.field.templateOptions.label : '';
 	 
 	 //check for required fields. This whole setting,unsetting thing seems kind of wrong though..
 	 //there might be a more 'vue-ey' way to do this...
 	 if ( this.field.required ){
            if ( !this.form.$errors[this.field.key].required ) this.$set(this.form.$errors[ this.field.key ], 'required', true);
-           setError(this.form, this.field.key, 'required', !this.model[ this.field.key ]) ;
+	   let requiredError = parseValidationString( 'required', false, label, this.model[ this.field.key ] );
+           setError(this.form, this.field.key, 'required', !this.model[ this.field.key ], requiredError) ;
 	 }
 	 
 	 //if we've got nothing left then return
@@ -37,7 +40,7 @@
 	 Object.keys(this.field.validators).forEach((validKey) => {
            if ( !this.form.$errors[this.field.key][validKey] ) this.$set(this.form.$errors[ this.field.key ], validKey, false);
            if ( !this.field.required && !this.model[ this.field.key ] ) {
-	     setError(this.form, this.field.key, validKey, false);
+	     setError(this.form, this.field.key, validKey, false );
 	     return resolve();
 	   }
 
@@ -53,7 +56,6 @@
              }
            }
            
-           let label = ( 'templateOptions' in this.field ) && ( 'label' in this.field.templateOptions ) ? this.field.templateOptions.label : '';
            validatorMessage = parseValidationString( validKey, validatorMessage, label, model[ this.field.key ] );
 
            let valid = false;
