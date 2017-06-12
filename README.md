@@ -1,6 +1,6 @@
 # Vue Formly
 
-Vue Formly is a JS based form builder heavily inspired by [Angular Formly](http://angular-formly.com/). Vue Formly was designed to provide an easy way to keep your forms consistent and to remove bloat from your code. As there's no "one way" to design your forms, Vue Formly allows you to create custom input types which you can use in your form schemas. Vue Formly itself does not come with any inputs pre-loaded but a set of Bootsrap form inputs can be installed over at [Vue Formly Bootstrap](https://github.com/formly-js/vue-formly-bootstrap).
+Vue Formly is a JS based form builder heavily inspired by [Angular Formly](http://angular-formly.com/). Vue Formly was designed to provide an easy way to keep your forms consistent and to remove bloat from your code. As there's no "one way" to design your forms, Vue Formly allows you to create custom input types which you can use in your form schemas. Vue Formly itself does not come with any inputs pre-loaded but a set of Boostrap form inputs can be installed over at [Vue Formly Bootstrap](https://github.com/formly-js/vue-formly-bootstrap).
 
 *NOTE*
 This is version 2 of Vue Formly and is only compatible with Vue 2.x. If you are wanting to use this with Vue 1.x then check out the [Vue Formly 1 Branch](https://github.com/formly-js/vue-formly/tree/1.0).
