@@ -1,6 +1,7 @@
 import Components from './components/index';
 import Filters from './filters/index';
 import Util,{getTypes, addType, addValidationMessage} from './util';
+import Directives from './directives/index';
 
 
 let Formly = {
@@ -10,6 +11,7 @@ let Formly = {
   install(Vue, options){
     
     //install our components
+    Directives(Vue);
     Components(Vue);
     Filters(Vue);
 

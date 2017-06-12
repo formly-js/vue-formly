@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-
+import Vue from 'vue';
 import VueFormly from 'src/index';
 import Util, {addType, getTypes, setError, addValidationMessage, parseValidationString} from 'src/util';
 
@@ -68,6 +68,44 @@ describe('module', () => {
 
     output = parseValidationString('blahblahblah', false, '', '');
     expect(output).to.be.false;
+  });
+
+  describe("Directives", () => {
+
+    it('formly-atts', () => {
+      let atts = {
+	placeholder: 'testing',
+	foo: 'bar'
+      };
+
+      let el = document.createElement('div');
+      
+      let vm = new Vue({
+	data: {
+	  atts: atts
+	},
+	template: '<div v-formly-atts="atts"></div>'
+      }).$mount(el);
+
+      expect(vm.$el.getAttribute('placeholder')).to.equal(atts.placeholder);
+      expect(vm.$el.getAttribute('foo')).to.equal(atts.foo);
+    });
+
+    it('formly-input-type', () => {
+
+      let el = document.createElement('div');
+      
+      let vm = new Vue({
+	data: {
+	  type: 'email'
+	},
+	template: '<input type="text" v-formly-input-type="type">'
+      }).$mount(el);
+
+      expect(vm.$el.getAttribute('type')).to.equal('email');
+      
+    });
+    
   });
   
 });
