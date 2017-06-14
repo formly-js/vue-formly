@@ -14,7 +14,6 @@
    },
    methods: {
      validate:function(){
-
        return new Promise((resolve, reject)=>{
 	 //first check if we need to create a field
 	 if ( !this.form.$errors[this.field.key] ) this.$set(this.form.$errors, this.field.key, {});

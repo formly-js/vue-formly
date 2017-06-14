@@ -1,6 +1,13 @@
 <template>
   <fieldset>
-    <formly-field v-if="!customLayout" :ref="field.key" v-for="field in fields" :form.sync="form" :model.sync="model" :field="field" :key="'formly_'+field.key"></formly-field>
+    <formly-field
+	    v-if="!customLayout"
+	    :ref="field.key"
+	    v-for="field in fields"
+	    :form.sync="form"
+	    :model.sync="model"
+	    :field="field"
+	    :key="'formly_'+field.key"></formly-field>
     <slot :keys="keys"></slot>
   </fieldset>
 </template>
@@ -13,8 +20,26 @@ export default {
 	let target = this.fields.length;
 	let count = 0;
 	this.fields.forEach( field => {
+	  if ( !(field.key in this.form) ) {
+	    count++;
+	    if( target == count ) resolve();
+	    return;
+	  }
 	  this.$set( this.form[ field.key ], '$dirty', true );
-	  this.$refs[ field.key ][0].validate()
+	  let validate;
+	  if ( field.key in this.$refs ){
+	    validate = this.$refs[ field.key ][0].validate;
+	  } else {
+	    this.$children.forEach( child => {
+	      if ( child.field === field.key ) validate = child.validate;
+	    });
+	  }
+	  if ( typeof validate !== 'function' ){
+	    count++;
+	    if( target == count ) resolve();
+	    return;
+	  }
+	  validate()
 	    .then(()=>{
 	      count++;
 	      if( target == count ) resolve();
