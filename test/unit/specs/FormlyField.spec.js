@@ -156,6 +156,41 @@ describe('FormlyField', () => {
     expect(parent.id).to.equal('test_wrapper_element');    
   });
 
+  it('Should be hidden if display is false', (done) => {
+    Vue.component('formly_test', {
+      props: ['form', 'field', 'model'],
+      template: '<div></div>'
+    });
+    
+    let data = {
+      form: {
+	$errors: {},
+	$valid: true
+      },
+      model: {
+	hidden: '',
+	hiddenVal: 'test'
+      },
+      fields: [
+	{
+	  key: 'hidden',
+	  type: 'test',
+	  display: function(field, model){
+	    return model.hiddenVal === 'hello';
+	  }
+	}
+      ]
+    };
+
+    createForm('<formly-field :form.sync="form" :field="fields[0]" :model="model"></formly-field>', data);
+    expect(vm.$el.style.display).to.equal('none');
+    data.model.hiddenVal = 'hello';
+    setTimeout(()=>{
+      expect(vm.$el.style.display).to.equal('');
+      done();
+    });
+  });
+
   
   describe('Validation', ()=>{
 
@@ -226,6 +261,36 @@ describe('FormlyField', () => {
         expect(vm.form.$errors.search.required).to.be.false;
         done();
       },0);
+      
+    });
+
+    it('should only require values if they are displayed', () => {
+      let data = {
+        form: {
+          $valid: true,
+          $errors: {}
+        },
+        model: {
+          conditional: '',
+	  hiddenVal: ''
+        },
+        fields: [
+          {
+            key: 'conditional',
+            type: 'test',
+            required: true,
+	    display: function(field, model){
+	      return model.hiddenVal === 'test';
+	    }
+          }
+        ]
+      };
+      
+      createValidField(data);
+      expect(vm.form.$errors.conditional.required).to.be.false;
+      data.model.hiddenVal = 'test';
+      vm.$children[0].validate();
+      expect(vm.form.$errors.conditional.required).to.be.true;
       
     });
 

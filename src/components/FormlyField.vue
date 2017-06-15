@@ -1,5 +1,5 @@
 <template>
-  <component :is="type" :form.sync="form" :field="field" :model="model" :to="field.templateOptions"></component>
+  <component v-show="display" :is="type" :form.sync="form" :field="field" :model="model" :to="field.templateOptions"></component>
 </template>
 
 <script>
@@ -10,6 +10,12 @@
    computed: {
      type:function(){
        return 'formly_'+this.field.type;
+     },
+     display: function(){
+       // always show if there is no conditional display
+       if ( typeof this.field.display !== 'function' ) return true;
+
+       return this.field.display( this.field, this.model );       
      }
    },
    methods: {
@@ -26,7 +32,8 @@
 	 if ( this.field.required ){
            if ( !this.form.$errors[this.field.key].required ) this.$set(this.form.$errors[ this.field.key ], 'required', true);
 	   let requiredError = parseValidationString( 'required', false, label, this.model[ this.field.key ] );
-           setError(this.form, this.field.key, 'required', !this.model[ this.field.key ], requiredError) ;
+	   let required = this.display ? !this.model[ this.field.key ] : false;
+           setError(this.form, this.field.key, 'required', required, requiredError) ;
 	 }
 	 
 	 //if we've got nothing left then return
