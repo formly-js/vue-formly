@@ -30,8 +30,11 @@ export default {
 	  if ( field.key in this.$refs ){
 	    validate = this.$refs[ field.key ][0].validate;
 	  } else {
-	    this.$children.forEach( child => {
-	      if ( child.field === field.key ) validate = child.validate;
+	    this.$children.some( child => {
+	      if ( child.field.key === field.key ){
+		validate = child.validate;
+		return true;
+	      }
 	    });
 	  }
 	  if ( typeof validate !== 'function' ){
