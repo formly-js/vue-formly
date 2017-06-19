@@ -191,6 +191,39 @@ describe('FormlyField', () => {
     });
   });
 
+  it('Should take a display property as a string expression', (done) => {
+    Vue.component('formly_test', {
+      props: ['form', 'field', 'model'],
+      template: '<div></div>'
+    });
+    
+    let data = {
+      form: {
+	$errors: {},
+	$valid: true
+      },
+      model: {
+	hiddenString: '',
+	hiddenStringVal: 'test'
+      },
+      fields: [
+	{
+	  key: 'hiddenString',
+	  type: 'test',
+	  display: 'model.hiddenStringVal === "hello"'
+	}
+      ]
+    };
+
+    createForm('<formly-field :form.sync="form" :field="fields[0]" :model="model"></formly-field>', data);
+    expect(vm.$el.style.display).to.equal('none');
+    data.model.hiddenStringVal = 'hello';
+    setTimeout(()=>{
+      expect(vm.$el.style.display).to.equal('');
+      done();
+    });
+  });
+
   
   describe('Validation', ()=>{
 
