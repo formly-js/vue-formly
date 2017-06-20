@@ -98,7 +98,9 @@
    components: getTypes(),
    created(){
      this.validate();
-     this.$watch('model.'+this.field.key, (val) =>{
+     this.$watch(function(){
+       return this.model[ this.field.key ];
+     }, (val) =>{
        let valid = this.validate();
      });
    },
