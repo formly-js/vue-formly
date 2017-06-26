@@ -31,6 +31,7 @@ export default {
 	    validate = this.$refs[ field.key ][0].validate;
 	  } else {
 	    this.$children.some( child => {
+	      if ( ! ( 'field' in child ) ) return false;
 	      if ( child.field.key === field.key ){
 		validate = child.validate;
 		return true;
