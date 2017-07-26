@@ -3,7 +3,6 @@
 </template>
 
 <script>
- const Vue = require('vue');
  import Util, {getTypes, setError, parseValidationString } from '../util';
  export default {
    props: ['form', 'model', 'field', 'to'],
