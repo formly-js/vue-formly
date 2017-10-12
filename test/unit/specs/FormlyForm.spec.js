@@ -3,7 +3,7 @@ const expect = chai.expect;
 import sinonChai from 'sinon-chai';
 import sinon from 'sinon';
 import Vue from 'vue';
-import FormlyForm from 'src/components/FormlyForm.vue';
+import FormlyForm from 'src/components/FormlyForm';
 import Filters from 'src/filters/index';
 Vue.component('formly-form', FormlyForm);
 chai.use(sinonChai);
@@ -221,7 +221,6 @@ describe('FormlyForm', () => {
       data: data,
       template: '<formly-form :form="form" :model="model" :fields="fields"></formly-form>'
     }).$mount(el);
-    
     
     let spy = sinon.spy();
 

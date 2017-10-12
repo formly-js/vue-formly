@@ -1,7 +1,7 @@
 import chai from 'chai';
 const expect = chai.expect;
 import Vue from 'vue';
-import FormlyField from 'src/components/FormlyField.vue';
+import FormlyField from 'src/components/FormlyField';
 import Utils from 'src/util';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
@@ -183,7 +183,7 @@ describe('FormlyField', () => {
     };
 
     createForm('<formly-field :form.sync="form" :field="fields[0]" :model="model"></formly-field>', data);
-    expect(vm.$el.style.display).to.equal('none');
+    expect(vm.$el.nodeName).to.equal('#comment');
     data.model.hiddenVal = 'hello';
     setTimeout(()=>{
       expect(vm.$el.style.display).to.equal('');
@@ -216,7 +216,7 @@ describe('FormlyField', () => {
     };
 
     createForm('<formly-field :form.sync="form" :field="fields[0]" :model="model"></formly-field>', data);
-    expect(vm.$el.style.display).to.equal('none');
+    expect(vm.$el.nodeName).to.equal('#comment');
     data.model.hiddenStringVal = 'hello';
     setTimeout(()=>{
       expect(vm.$el.style.display).to.equal('');
