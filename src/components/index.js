@@ -1,5 +1,5 @@
 import FormlyForm from './FormlyForm';
-import FormlyField from './FormlyField.vue';
+import FormlyField from './FormlyField';
 
 export default function(Vue){
     Vue.component('formly-form', FormlyForm);
