@@ -1,4 +1,4 @@
-import FormlyForm from './FormlyForm.vue';
+import FormlyForm from './FormlyForm';
 import FormlyField from './FormlyField.vue';
 
 export default function(Vue){
