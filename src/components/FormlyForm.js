@@ -5,12 +5,12 @@ export default {
       const self = this;
       children = this.fields.map( function(field){
 	return h('formly-field', {
-	  domProps: {
-	    ref: field.key,
+	  key: `formly_{field.key}`,
+	  ref: field.key,
+	  props: {
 	    model: self.model,
 	    form: self.form,
-	    field: field,
-	    key: `formly_{field.key}`
+	    field: field
 	  }
 	});
       });

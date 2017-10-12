@@ -226,7 +226,7 @@ describe('FormlyForm', () => {
     let spy = sinon.spy();
 
     let prom = vm.$children[0].validate();
-    prom.then(()=>spy());
+    prom.then(()=>spy()).catch((e)=>console.log(e));
     setTimeout(()=>{
       spy.should.be.calledOnce;
       formlyFieldSpy.should.be.calledTwice;
