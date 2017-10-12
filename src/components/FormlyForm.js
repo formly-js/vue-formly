@@ -32,7 +32,7 @@ export default {
 	  this.$set( this.form[ field.key ], '$dirty', true );
 	  let validate;
 	  if ( field.key in this.$refs ){
-	    validate = this.$refs[ field.key ][0].validate;
+	    validate = this.$refs[ field.key ].validate;
 	  } else {
 	    this.$children.some( child => {
 	      if ( ! ( 'field' in child ) ) return false;
@@ -42,11 +42,13 @@ export default {
 	      }
 	    });
 	  }
+
 	  if ( typeof validate !== 'function' ){
 	    count++;
 	    if( target == count ) resolve();
 	    return;
 	  }
+
 	  validate()
 	    .then(()=>{
 	      count++;

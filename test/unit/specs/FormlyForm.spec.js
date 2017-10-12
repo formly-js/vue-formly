@@ -222,11 +222,10 @@ describe('FormlyForm', () => {
       template: '<formly-form :form="form" :model="model" :fields="fields"></formly-form>'
     }).$mount(el);
     
-    
     let spy = sinon.spy();
 
     let prom = vm.$children[0].validate();
-    prom.then(()=>spy()).catch((e)=>console.log(e));
+    prom.then(()=>spy());
     setTimeout(()=>{
       spy.should.be.calledOnce;
       formlyFieldSpy.should.be.calledTwice;
