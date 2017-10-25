@@ -43,7 +43,7 @@ export default {
 	if ( this.field.required ){
           if ( !this.form.$errors[this.field.key].required ) this.$set(this.form.$errors[ this.field.key ], 'required', true);
 	  let requiredError = parseValidationString( 'required', false, label, this.model[ this.field.key ] );
-	  let requiredType = typeof this.model[ this.field.key ] === 'string' ? !this.model[ this.field.key ] : this.model[ this.field.key] !== null && this.model[ this.field.key ].length === 0;
+	  let requiredType = typeof this.model[ this.field.key ] === 'string' ? !this.model[ this.field.key ] : this.model[ this.field.key] !== null && this.model[this.field.key] !== undefined && this.model[ this.field.key ].length === 0;
 	  let required = this.display ? requiredType : false;
           setError(this.form, this.field.key, 'required', required, requiredError) ;
 	}
