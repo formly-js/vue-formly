@@ -7,12 +7,15 @@ export default {
 	form: this.form,
 	field: this.field,
 	model: this.model,
-	to: this.field.templateOptions
+	to: this.templateOptions
       }
     });
   },
   props: ['form', 'model', 'field', 'to'],
   computed: {
+    templateOptions: function(){
+      return this.field.templateOptions || {};
+    },
     type:function(){
       return 'formly_'+this.field.type;
     },

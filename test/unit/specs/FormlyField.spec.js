@@ -127,6 +127,33 @@ describe('FormlyField', () => {
     
   });
 
+  it('Should default {} to templateOptions if none are defined', () => {
+    Vue.component('formly_test', {
+      props: ['form', 'field', 'model', 'to'],
+      template: '<div></div>'
+    });
+
+    let data = {
+      form: {
+        $errors: {},
+        $valid: {}
+      },
+      fields: [
+        {
+          key: 'search',
+          type: 'test'
+        }
+      ],
+      model: {
+        search: ''
+      }
+    };
+
+    createForm('<formly-field ref="formlyField" :form.sync="form" :field="fields[0]" :model="model"></formly-field>', data);
+
+    expect(vm.$refs.formlyField.templateOptions).to.deep.equal({});
+  });
+
   it('Should take a wrapper string', () => {
     Vue.component('formly_test', {
       props: ['form', 'field', 'model', 'to'],
