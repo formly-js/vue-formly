@@ -5,7 +5,7 @@ export default {
       const self = this;
       children = this.fields.map( function(field){
 	return h('formly-field', {
-	  key: `formly_{field.key}`,
+	  key: `formly_${field.key}`,
 	  ref: field.key,
 	  props: {
 	    model: self.model,

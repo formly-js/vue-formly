@@ -64,7 +64,7 @@ describe('FormlyForm', () => {
       ]
     };
 
-    createForm('<formly-form :form="form" :model="model" :fields="fields"></formly-form>', data);
+    createForm('<formly-form ref="form" :form="form" :model="model" :fields="fields"></formly-form>', data);
 
     //check the elements have been created
 
@@ -72,7 +72,8 @@ describe('FormlyForm', () => {
     expect(vm.$el.querySelectorAll('.formly-field')).to.be.length(2);
 
     //check their data
-    
+    expect(vm.$refs.form.$refs.fname.$vnode.key).to.equal('formly_fname');
+    expect(vm.$refs.form.$refs.lname.$vnode.key).to.equal('formly_lname')
     expect(vm.$el.querySelector('#lname_model').textContent).to.contain('smith');
     expect(JSON.parse(vm.$el.querySelector('#fname_field').textContent)).to.deep.equal(data.fields[0]);
     expect(JSON.parse(vm.$el.querySelector('#lname_field').textContent)).to.deep.equal(data.fields[1]);
