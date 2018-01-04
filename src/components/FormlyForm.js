@@ -16,7 +16,7 @@ export default {
       });
     }
     if ( 'default' in this.$scopedSlots ) children.push( this.$scopedSlots.default({ keys: this.keys }) );
-    return h('fieldset', children);
+    return h(this.tag ? this.tag : 'fieldset', children);
   },
   methods: {
     validate(){
@@ -61,7 +61,7 @@ export default {
       });
     }
   },
-  props: ['form', 'model', 'fields', 'customLayout'],
+  props: ['form', 'model', 'fields', 'customLayout','tag'],
   computed:{
     keys(){
       let keys = {};
