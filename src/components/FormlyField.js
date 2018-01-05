@@ -60,7 +60,7 @@ export default {
 	
 	Object.keys(this.field.validators).forEach((validKey) => {
           if ( !this.form.$errors[this.field.key][validKey] ) this.$set(this.form.$errors[ this.field.key ], validKey, false);
-          if ( !this.field.required && !this.model[ this.field.key ] ) {
+          if ( this.field.required === false && !this.model[ this.field.key ] ) {
 	    setError(this.form, this.field.key, validKey, false );
 	    return resolve();
 	  }

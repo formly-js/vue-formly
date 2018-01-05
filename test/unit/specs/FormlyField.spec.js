@@ -396,6 +396,7 @@ describe('FormlyField', () => {
           {
             key: 'search',
             type: 'test',
+            required: false,
             validators: {
               expression: 'field.value == "test"'
             }
@@ -445,6 +446,29 @@ describe('FormlyField', () => {
         done();
       },0);
     });
+
+    it('should run validators even if require does not exists and model is empty', done => {
+      let data = {
+        form: {
+          $valid: true,
+          $errors: {}
+        },
+        model: {
+          search: null
+        },
+        fields: [
+          {
+            key: 'search',
+            type: 'test',
+            validators: {
+              aValidator: () => done()
+            }
+          }
+        ]
+      };
+
+      createValidField(data);
+    })
 
     it('Async Validation', (done) => {
       let data = {
