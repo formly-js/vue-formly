@@ -82,6 +82,29 @@ describe('FormlyForm', () => {
     
   });
 
+  
+  it('should allow using a custom tag', () => {
+
+    let data = {
+      form: {},
+      model: {
+        fname: '',
+      },
+      fields: [        
+        {
+          key: 'fname',
+          type: 'input'
+        },
+      ]
+    };
+
+    createForm('<formly-form ref="form" :form="form" :model="model" :fields="fields" tag="div"></formly-form>', data);
+
+    //check the element have been created
+
+    expect(vm.$el.tagName).to.equal('DIV');  
+  });
+
   it('Should not display fields if custom-layout is set', () => {
 
     let data = {
