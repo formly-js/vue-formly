@@ -1,6 +1,6 @@
 {
   "name": "vue-formly",
-  "version": "2.5.6",
+  "version": "2.5.7",
   "description": "A simple and extendable form builder for Vue.js",
   "main": "dist/vue-formly.js",
   "scripts": {
