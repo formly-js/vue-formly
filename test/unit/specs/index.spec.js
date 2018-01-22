@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import Vue from 'vue';
 import VueFormly from 'src/index';
-import Util, {addType, getTypes, setError, addValidationMessage, parseValidationString} from 'src/util';
+import Util, {addType, getTypes, setError, addValidationMessage, parseValidationString, set} from 'src/util';
 
 
 describe('module', () => {
@@ -68,6 +68,44 @@ describe('module', () => {
 
     output = parseValidationString('blahblahblah', false, '', '');
     expect(output).to.be.false;
+  });
+
+  describe('set()', () => {
+
+    it('should be present on the Vue instance', () => {
+      const test = new Vue();
+      expect(test.$formlySet).to.be.a('function');
+    });
+
+    it('should take a nested field', () => {
+      const test = new Vue({
+	data: {
+	  deeply: {
+	    nested: {
+	      child: 'foo'
+	    }
+	  }
+	}
+      });
+
+      expect(test.deeply.nested.child).to.equal('foo');
+      test.$formlySet(test.deeply, 'nested.child', 'bar');
+      expect(test.deeply.nested.child).to.equal('bar');
+    });
+
+    it('should set dotted properties', () => {
+      const test = new Vue({
+	data: {
+	  deeply: {
+	    'nested.child': 'foo'
+	  }
+	}
+      });
+      
+      test.$formlySet(test.deeply, 'nested.child', 'bar');
+      expect(test.deeply['nested.child']).to.equal('bar');
+    });
+    
   });
 
   describe("Directives", () => {

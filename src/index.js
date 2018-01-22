@@ -1,6 +1,6 @@
 import Components from './components/index';
 import Filters from './filters/index';
-import Util,{getTypes, addType, addValidationMessage} from './util';
+import Util,{getTypes, addType, addValidationMessage, set} from './util';
 import Directives from './directives/index';
 
 
@@ -16,6 +16,7 @@ let Formly = {
     Filters(Vue);
 
     Vue.$formly = {getTypes, addType, addValidationMessage};
+    Vue.prototype.$formlySet = set
   }
 };
 

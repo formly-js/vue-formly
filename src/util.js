@@ -20,6 +20,50 @@ export function getTypes(){
 }
 
 /**
+ * Allows deep nesting or not, depending on compatability
+ * Should first check for the deeply nested field. If it doesn't exist then we treat the key as target[key]
+ * If it does exist, then we set it
+ * @param {Object} target
+ * @param {String} key
+ * @param {Mixed} val
+ */
+export function set(target, key, val){
+  if ( hasNestedProperty( target, key ) ){
+    const parts = key.split('.');
+    const finalKey = parts.pop();
+    const newTarget = parts.reduce( (acc, cur) => acc[cur], target);
+    this.$set(newTarget, finalKey, val);
+  } else {
+    this.$set(target, key, val);
+  }
+}
+
+/**
+ * Checks to see whether an object has a deeply nested path
+ * @param {Object} target
+ * @param {String} propertyPath
+ * @returns {Boolean}
+ */
+function hasNestedProperty(obj, propertyPath){
+  if(!propertyPath)
+    return false;
+
+  const properties = propertyPath.split('.');
+
+  for (var i = 0; i < properties.length; i++) {
+    var prop = properties[i];
+
+    if(!obj || !obj.hasOwnProperty(prop)){
+      return false;
+    } else {
+      obj = obj[prop];
+    }
+  }
+
+  return true;
+}
+
+/**
  * Allows a field to add/remove errors to the form
  * @param {Object} form
  * @param {String} key
