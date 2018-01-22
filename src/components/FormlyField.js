@@ -2,7 +2,7 @@ import Util, {getTypes, setError, parseValidationString } from '../util';
 export default {
   render(h){
     if ( !this.display ) return;
-    return h(this.type, {
+    const field = h(this.type, {
       props: {
 	form: this.form,
 	field: this.field,
@@ -10,6 +10,13 @@ export default {
 	to: this.templateOptions
       }
     });
+
+    if ( 'wrapper' in this.field ){
+      const wrapperOps = { ...this.field.wrapperOptions };
+      return h( this.field.wrapper, wrapperOps, [field] );
+    } else {
+      return field;
+    }
   },
   props: ['form', 'model', 'field', 'to'],
   computed: {
@@ -114,6 +121,7 @@ export default {
     });
   },
   mounted(){
+    /*
     if ( !this.field.wrapper ) return;
     
     //create a temporary element
@@ -130,5 +138,6 @@ export default {
     parent.insertBefore(wrapper.firstChild, wrapper);
     //remove the temporary element
     parent.removeChild(wrapper);
+    */
   }
 }

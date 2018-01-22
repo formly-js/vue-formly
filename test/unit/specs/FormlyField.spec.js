@@ -169,7 +169,12 @@ describe('FormlyField', () => {
         {
           key: 'wrapped',
           type: 'test',
-          wrapper: '<div id="test_wrapper_element"></div>'
+          wrapper: 'div',
+	  wrapperOptions: {
+	    attrs: {
+	      id: 'test_wrapper_element'
+	    }
+	  }
         }
       ],
       model: {
