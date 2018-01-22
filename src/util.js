@@ -38,6 +38,14 @@ export function set(target, key, val){
   }
 }
 
+export function get(target, key){
+  if ( !key in target ){
+    
+  } else {
+    return target[key];
+  }
+}
+
 /**
  * Checks to see whether an object has a deeply nested path
  * @param {Object} target
