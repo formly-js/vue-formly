@@ -38,12 +38,25 @@ export function set(target, key, val){
   }
 }
 
+/**
+ * returns an object value by string
+ * https://stackoverflow.com/questions/6491463/accessing-nested-javascript-objects-with-string-key
+ * @param {Object} target
+ * @param {String} key
+ */
 export function get(target, key){
-  if ( !key in target ){
-    
-  } else {
-    return target[key];
+  key = key.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
+  key = key.replace(/^\./, '');           // strip a leading dot
+  var a = key.split('.');
+  for (var i = 0, n = a.length; i < n; ++i) {
+    var k = a[i];
+    if (k in target) {
+      target = target[k];
+    } else {
+      return;
+    }
   }
+  return target;
 }
 
 /**

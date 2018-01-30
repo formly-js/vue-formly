@@ -70,6 +70,37 @@ describe('module', () => {
     expect(output).to.be.false;
   });
 
+  describe('get()', () => {
+
+    it('should be present on the Vue instance', () => {
+      const test = new Vue();
+      expect(test.$formlyGet).to.be.a('function');
+    });
+
+    it('should return nested fields', () => {
+      const test = new Vue({
+	data: {
+	  deeply: {
+	    nested: {
+	      child: 'foo',
+	    },
+	    arr: [
+	      {
+		foo: 'bar'
+	      },
+	      {
+		bar: 'foo'
+	      }
+	    ]
+	  }
+	}
+      });
+      expect(test.$formlyGet(test.deeply, 'nested.child')).to.equal('foo');
+      expect(test.$formlyGet(test.deeply, 'arr[1].bar')).to.equal('foo');
+    });
+    
+  });
+
   describe('set()', () => {
 
     it('should be present on the Vue instance', () => {
