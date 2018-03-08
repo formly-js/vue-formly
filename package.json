@@ -1,6 +1,6 @@
 {
   "name": "vue-formly",
-  "version": "2.5.7",
+  "version": "2.5.8",
   "description": "A simple and extendable form builder for Vue.js",
   "main": "dist/vue-formly.js",
   "scripts": {
@@ -11,11 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/formly-js/vue-formly.git"
   },
-  "keywords": [
-    "vue",
-    "vuejs",
-    "form"
-  ],
+  "keywords": ["vue", "vuejs", "form"],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/formly-js/vue-formly/issues"
