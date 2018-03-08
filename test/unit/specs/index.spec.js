@@ -1,11 +1,17 @@
 import {expect} from 'chai';
 import Vue from 'vue';
 import VueFormly from 'src/index';
-import Util, {addType, getTypes, setError, addValidationMessage, parseValidationString, set} from 'src/util';
-
+import Util, {
+  addType,
+  getTypes,
+  setError,
+  addValidationMessage,
+  parseValidationString,
+  set,
+  get
+} from 'src/util';
 
 describe('module', () => {
-
   it('module props', () => {
     expect(VueFormly).to.exist;
     expect(VueFormly.install).to.be.a('function');
@@ -19,11 +25,10 @@ describe('module', () => {
   });
 
   it('addType()', () => {
-
     //mock vue
     window.Vue = {
-      component(){},
-      filter(){}
+      component() {},
+      filter() {}
     };
     VueFormly.install(Vue);
 
@@ -34,7 +39,7 @@ describe('module', () => {
     expect(getTypes().formly_test).to.deep.equal(newField);
   });
 
-  it('setError()',()=>{
+  it('setError()', () => {
     let form = {
       $errors: {}
     };
@@ -62,7 +67,7 @@ describe('module', () => {
     let expected = 'label just value testing';
     let output = parseValidationString('parseTest', false, 'label', 'value');
     expect(output).to.equal(expected);
-    
+
     output = parseValidationString(false, message, 'label', 'value');
     expect(output).to.equal(expected);
 
@@ -71,38 +76,31 @@ describe('module', () => {
   });
 
   describe('get()', () => {
-
     it('should be present on the Vue instance', () => {
       const test = new Vue();
       expect(test.$formlyGet).to.be.a('function');
     });
 
-    it('should return nested fields', () => {
+    it('should get a nested field, and one with dot notation', () => {
       const test = new Vue({
-	data: {
-	  deeply: {
-	    nested: {
-	      child: 'foo',
-	    },
-	    arr: [
-	      {
-		foo: 'bar'
-	      },
-	      {
-		bar: 'foo'
-	      }
-	    ]
-	  }
-	}
+        data: {
+          deeply: {
+            nested: {
+              child: 'foo'
+            },
+            'child.nested': 'bar'
+          }
+        }
       });
+
+      expect(test.deeply.nested.child).to.equal('foo');
+      expect(test.deeply['child.nested']).to.equal('bar');
       expect(test.$formlyGet(test.deeply, 'nested.child')).to.equal('foo');
-      expect(test.$formlyGet(test.deeply, 'arr[1].bar')).to.equal('foo');
+      expect(test.$formlyGet(test.deeply, 'child.nested')).to.equal('bar');
     });
-    
   });
 
   describe('set()', () => {
-
     it('should be present on the Vue instance', () => {
       const test = new Vue();
       expect(test.$formlySet).to.be.a('function');
@@ -110,13 +108,13 @@ describe('module', () => {
 
     it('should take a nested field', () => {
       const test = new Vue({
-	data: {
-	  deeply: {
-	    nested: {
-	      child: 'foo'
-	    }
-	  }
-	}
+        data: {
+          deeply: {
+            nested: {
+              child: 'foo'
+            }
+          }
+        }
       });
 
       expect(test.deeply.nested.child).to.equal('foo');
@@ -126,34 +124,32 @@ describe('module', () => {
 
     it('should set dotted properties', () => {
       const test = new Vue({
-	data: {
-	  deeply: {
-	    'nested.child': 'foo'
-	  }
-	}
+        data: {
+          deeply: {
+            'nested.child': 'foo'
+          }
+        }
       });
-      
+
       test.$formlySet(test.deeply, 'nested.child', 'bar');
       expect(test.deeply['nested.child']).to.equal('bar');
     });
-    
   });
 
-  describe("Directives", () => {
-
+  describe('Directives', () => {
     it('formly-atts', () => {
       let atts = {
-	placeholder: 'testing',
-	foo: 'bar'
+        placeholder: 'testing',
+        foo: 'bar'
       };
 
       let el = document.createElement('div');
-      
+
       let vm = new Vue({
-	data: {
-	  atts: atts
-	},
-	template: '<div v-formly-atts="atts"></div>'
+        data: {
+          atts: atts
+        },
+        template: '<div v-formly-atts="atts"></div>'
       }).$mount(el);
 
       expect(vm.$el.getAttribute('placeholder')).to.equal(atts.placeholder);
@@ -161,20 +157,16 @@ describe('module', () => {
     });
 
     it('formly-input-type', () => {
-
       let el = document.createElement('div');
-      
+
       let vm = new Vue({
-	data: {
-	  type: 'email'
-	},
-	template: '<input type="text" v-formly-input-type="type">'
+        data: {
+          type: 'email'
+        },
+        template: '<input type="text" v-formly-input-type="type">'
       }).$mount(el);
 
       expect(vm.$el.getAttribute('type')).to.equal('email');
-      
     });
-    
   });
-  
 });
