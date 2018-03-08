@@ -11,7 +11,11 @@
     "type": "git",
     "url": "git+https://github.com/formly-js/vue-formly.git"
   },
-  "keywords": ["vue", "vuejs", "form"],
+  "keywords": [
+    "vue",
+    "vuejs",
+    "form"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/formly-js/vue-formly/issues"
@@ -59,7 +63,6 @@
     "mocha": "2.5.3",
     "mocha-generators": "1.2.0",
     "mocha-loader": "0.7.1",
-    "moment": "2.14.1",
     "node-sass": "3.8.0",
     "phantomjs-prebuilt": "2.1.10",
     "replace-in-file": "^1.1.1",
