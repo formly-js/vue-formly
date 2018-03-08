@@ -11,11 +11,11 @@ export default exports;
  * @param {String} id
  * @param {Object} options
  */
-export function addType(id, options){
-  exports.formlyFields['formly_'+id] = options;
+export function addType(id, options) {
+  exports.formlyFields['formly_' + id] = options;
 }
 
-export function getTypes(){
+export function getTypes() {
   return exports.formlyFields;
 }
 
@@ -27,11 +27,11 @@ export function getTypes(){
  * @param {String} key
  * @param {Mixed} val
  */
-export function set(target, key, val){
-  if ( hasNestedProperty( target, key ) ){
+export function set(target, key, val) {
+  if (hasNestedProperty(target, key)) {
     const parts = key.split('.');
     const finalKey = parts.pop();
-    const newTarget = parts.reduce( (acc, cur) => acc[cur], target);
+    const newTarget = parts.reduce((acc, cur) => acc[cur], target);
     this.$set(newTarget, finalKey, val);
   } else {
     this.$set(target, key, val);
@@ -39,28 +39,40 @@ export function set(target, key, val){
 }
 
 /**
+ * returns an object value by string
+ * @param {Object} target
+ * @param {String} key
+ */
+export function get(target, key) {
+  const hasNested = hasNestedProperty(target, key, true);
+  return hasNested === null ? target[key] : hasNested;
+}
+
+/**
  * Checks to see whether an object has a deeply nested path
  * @param {Object} target
  * @param {String} propertyPath
- * @returns {Boolean}
+ * @param {Boolean} returnVal
+ * @returns {Boolean || Any} will return either true/false for existance or the actual value
  */
-function hasNestedProperty(obj, propertyPath){
-  if(!propertyPath)
-    return false;
+function hasNestedProperty(obj, propertyPath, returnVal = false) {
+  if (!propertyPath) return false;
 
+  // strip the leading dot
+  propertyPath = propertyPath.replace(/^\./, '');
   const properties = propertyPath.split('.');
 
   for (var i = 0; i < properties.length; i++) {
     var prop = properties[i];
 
-    if(!obj || !obj.hasOwnProperty(prop)){
-      return false;
+    if (!obj || !obj.hasOwnProperty(prop)) {
+      return returnVal ? null : false;
     } else {
       obj = obj[prop];
     }
   }
 
-  return true;
+  return returnVal ? obj : true;
 }
 
 /**
@@ -70,8 +82,8 @@ function hasNestedProperty(obj, propertyPath){
  * @param {String} err
  * @param {Bool} isError
  */
-export function setError(form, key, err, isError, message = false){
-  if ( !form.$errors[key] ) form.$errors[key] = {};
+export function setError(form, key, err, isError, message = false) {
+  if (!form.$errors[key]) form.$errors[key] = {};
   form.$errors[key][err] = isError ? message || isError : false;
 }
 
@@ -80,8 +92,8 @@ export function setError(form, key, err, isError, message = false){
  * @param {string} key
  * @param {string} message
  */
-export function addValidationMessage(key, message){
-  exports.validationMessages[ key ] = message;
+export function addValidationMessage(key, message) {
+  exports.validationMessages[key] = message;
 }
 
 /**
@@ -91,13 +103,12 @@ export function addValidationMessage(key, message){
  * @param {string} label
  * @param {string} value
  */
-export function parseValidationString(key, message, label, value){
-
+export function parseValidationString(key, message, label, value) {
   // if a key has been passed and there's no validation message and no message has been passed then return
-  if ( key && !(key in exports.validationMessages ) && !message ) return false;
-  
+  if (key && !(key in exports.validationMessages) && !message) return false;
+
   // first check if a validation message with this key exists
-  if ( key in exports.validationMessages ){
+  if (key in exports.validationMessages) {
     message = exports.validationMessages[key];
   }
 
