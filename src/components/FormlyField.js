@@ -40,13 +40,18 @@ export default {
 	if ( !this.field.templateOptions ) this.$set(this.field, 'templateOptions', {});
 
 	let label = ( 'templateOptions' in this.field ) && ( 'label' in this.field.templateOptions ) ? this.field.templateOptions.label : '';
-	
+  
+  if (!this.display) {
+    this.$set(this.form.$errors, this.field.key, {});
+    return resolve();
+  }
+
 	//check for required fields. This whole setting,unsetting thing seems kind of wrong though..
 	//there might be a more 'vue-ey' way to do this...
 	if ( this.field.required ){
           if ( !this.form.$errors[this.field.key].required ) this.$set(this.form.$errors[ this.field.key ], 'required', true);
 	  let requiredError = parseValidationString( 'required', false, label, this.model[ this.field.key ] );
-	  let requiredType = typeof this.model[ this.field.key ] === 'string' ? !this.model[ this.field.key ] : this.model[ this.field.key] !== null && this.model[this.field.key] !== undefined && this.model[ this.field.key ].length === 0;
+	  let requiredType = typeof this.model[ this.field.key ] === 'string' ? !this.model[ this.field.key ] : this.model[ this.field.key] === null || this.model[this.field.key] === undefined || this.model[ this.field.key ].length === 0;
 	  let required = this.display ? requiredType : false;
           setError(this.form, this.field.key, 'required', required, requiredError) ;
 	}
@@ -107,11 +112,11 @@ export default {
   components: getTypes(),
   created(){
     this.validate();
-    this.$watch(function(){
-      return this.model[ this.field.key ];
-    }, (val) =>{
-      let valid = this.validate();
-    });
+    this.$watch(
+      'model',
+      (val) => { let valid = this.validate();},
+      { deep: true }
+    );
   },
   mounted(){
     if ( !this.field.wrapper ) return;
