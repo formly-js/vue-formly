@@ -1,5 +1,5 @@
 /**
- * vue-formly v2.5.8
+ * vue-formly v2.5.9
  * https://github.com/matt-sanders/vue-formly
  * Released under the MIT License.
  */
