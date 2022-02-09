@@ -63,7 +63,7 @@
     "mocha": "2.5.3",
     "mocha-generators": "1.2.0",
     "mocha-loader": "0.7.1",
-    "node-sass": "3.8.0",
+    "node-sass": "7.0.0",
     "phantomjs-prebuilt": "2.1.10",
     "replace-in-file": "^1.1.1",
     "rollup": "^0.33.0",
